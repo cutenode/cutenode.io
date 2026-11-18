@@ -1,37 +1,48 @@
 :root {
+	/* Light and dark get the same care; with no preference the page follows the system's, light first. */
 	color-scheme: light dark;
 
-	/* The binder: its page and the clear sleeve pockets the cards sit in. These follow the theme. */
-	--page: light-dark(oklch(0.95 0.012 330), oklch(0.15 0.012 330));
-	--pocket: light-dark(oklch(0.985 0.006 330 / 0.75), oklch(0.21 0.014 330 / 0.85));
-	--pocket-shine: light-dark(oklch(1 0 0 / 0.9), oklch(1 0 0 / 0.08));
-	--weld: light-dark(oklch(0.86 0.016 330), oklch(0.3 0.016 330));
-	--ink: light-dark(oklch(0.22 0.03 330), oklch(0.95 0.01 330));
-	--ink-soft: light-dark(oklch(0.43 0.035 330), oklch(0.79 0.025 330));
-	--accent: light-dark(oklch(0.5 0.24 340), oklch(0.78 0.18 340));
+	/* Black and white. Greys only where hierarchy needs them, and every grey that carries text clears AA on both. */
+	--paper: light-dark(#ffffff, #000000);
+	--ink: light-dark(#000000, #ffffff);
+	--ink-soft: light-dark(#5e5e5e, #a6a6a6);
+	--rule: light-dark(#d4d4d4, #333333);
+	--rule-strong: light-dark(#000000, #ffffff);
 
-	/* The cards are printed, so they look the same in both themes. */
-	--brand: #ff00cc;
-	--card-face: oklch(0.985 0.006 330);
-	--card-ink: oklch(0.2 0.03 330);
-	--card-ink-soft: oklch(0.42 0.035 330);
-	--card-art: oklch(0.21 0.04 330);
-	--set-active: var(--brand);
-	--set-popular: oklch(0.82 0.15 82);
-	--set-archived: oklch(0.76 0.03 260);
+	/* Two weights and no bold: 300 for display, 400 for everything else (only those files ship). */
+	--sans: 'Mona Sans', system-ui, sans-serif;
+	--mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+	--ease: cubic-bezier(0.22, 1, 0.36, 1);
 
-	--display: 'Anybody Variable', 'Arial Narrow', sans-serif;
-	--body: 'Atkinson Hyperlegible Next Variable', system-ui, sans-serif;
-	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-	--gutter: clamp(1rem, 4vw, 3rem);
+	/* A 12-column grid with wide margins; every block snaps to it. */
+	--margin: clamp(1rem, 3.5vw, 2.5rem);
+	--gap: clamp(0.75rem, 1.6vw, 1.25rem);
+	--hairline: 1px;
 
-	background: var(--page);
+	background: var(--paper);
 	color: var(--ink);
-	font-family: var(--body);
-	font-size: 1.0625rem;
-	line-height: 1.55;
-	accent-color: var(--accent);
+	font-family: var(--sans);
+	font-size: 1rem;
+	line-height: 1.5;
+	accent-color: var(--ink);
 	-webkit-text-size-adjust: 100%;
+}
+
+/* A pinned scheme (Storybook's theme toolbar sets data-scheme). The minifier turns light-dark() into variables that
+   switch only where a color-scheme is declared, so the pin has to be a declaration, not just an inline style. */
+:root[data-scheme='light'] {
+	color-scheme: light;
+}
+
+:root[data-scheme='dark'] {
+	color-scheme: dark;
+}
+
+/* Half-pixel rules where the screen can draw them. */
+@media (min-resolution: 2dppx) {
+	:root {
+		--hairline: 0.5px;
+	}
 }
 
 *,
@@ -46,44 +57,65 @@ body {
 }
 
 ::selection {
-	background: var(--brand);
-	color: oklch(0.15 0.03 330);
+	background: var(--ink);
+	color: var(--paper);
 }
 
 h1,
 h2,
 h3 {
-	font-family: var(--display);
-	line-height: 1.05;
-	letter-spacing: -0.02em;
-	text-wrap: balance;
 	margin: 0;
+	font-weight: 300;
+	line-height: 1;
+	letter-spacing: -0.03em;
+	text-wrap: balance;
 }
 
 p {
 	text-wrap: pretty;
 }
 
+/* No bold anywhere, emphasis included: hierarchy comes from size, spacing, case and rules. */
+strong,
+b,
+th {
+	font-weight: 400;
+}
+
+/* Links are underlined, so they read as links without colour; hover darkens the underline to the ink. */
 a {
-	color: var(--accent);
-	text-underline-offset: 0.2em;
-	text-decoration-thickness: 0.08em;
+	color: inherit;
+	text-decoration-line: underline;
+	text-decoration-thickness: var(--hairline);
+	text-underline-offset: 0.25em;
+	text-decoration-color: var(--ink-soft);
 }
 
 a:hover {
-	text-decoration-thickness: 0.14em;
+	text-decoration-color: var(--ink);
 }
 
 :focus-visible {
-	outline: 3px solid var(--accent);
-	outline-offset: 3px;
-	border-radius: 2px;
+	outline: 1px solid var(--ink);
+	outline-offset: 4px;
 }
 
+/* No ligatures in code: a command should look exactly like what you'd type (=> stays two characters). */
 code,
 pre {
-	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-	font-size: 0.9em;
+	font-family: var(--mono);
+	font-size: 0.86em;
+	font-variant-ligatures: none;
+}
+
+/* Metadata: small mono capitals, the index's second voice. */
+.meta {
+	font-family: var(--mono);
+	font-size: 0.72rem;
+	font-weight: 400;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--ink-soft);
 }
 
 .sr-only {
@@ -94,4 +126,27 @@ pre {
 	overflow: hidden;
 	clip-path: inset(50%);
 	white-space: nowrap;
+}
+
+/* The page's one moving thing: rules draw themselves across as they scroll into view. Without scroll timelines, or
+   with reduced motion, they're simply there. */
+@keyframes draw {
+	from {
+		scale: 0 1;
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	@supports (animation-timeline: view()) {
+		.rule-draw {
+			transform-origin: left;
+			animation: draw linear both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 100%;
+		}
+	}
+
+	a {
+		transition: text-decoration-color 0.2s var(--ease);
+	}
 }

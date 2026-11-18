@@ -5,13 +5,26 @@ export const STATUSES = ['active', 'popular', 'archived'] as const;
 
 export type Status = (typeof STATUSES)[number];
 
+/** The index's sections, in page order: tangled projects get their own, after the active work on GitHub. */
+export const SECTIONS = ['active', 'tangled', 'popular', 'archived'] as const;
+
+export type Section = (typeof SECTIONS)[number];
+
+/** A GitHub release, from the build-time lookup. */
+export type Release = { version: string; date: string; url: string };
+
 export type Project = Frontmatter & {
 	slug: string;
-	/** The write-up below the frontmatter, rendered to HTML. Empty when the file has none. */
+	/** The write-up below the frontmatter (what it is and who it's for), rendered to HTML. Empty when there's none. */
 	html: string;
+	/** The latest GitHub release, when the build could ask GitHub and there is one. */
+	release?: Release;
 };
 
-export type ProjectGroup = { status: Status; projects: Project[] };
+/** Where to report a problem: both forges keep issues under the repo's own path. */
+export const issuesUrl = (project: Project) => `${project.repo.replace(/\/$/, '')}/issues`;
+
+export type ProjectGroup = { section: Section; projects: Project[] };
 
 /** The `owner/name` of a GitHub repo URL, or undefined for any other forge. */
 export const githubRepo = (url: string) => {
@@ -27,17 +40,24 @@ export const githubRepo = (url: string) => {
 /** The newest date a project has, for sorting active work. */
 const lastSeen = (project: Project) => project.pushed ?? project.created ?? '';
 
-const BY_STATUS: Record<Status, (a: Project, b: Project) => number> = {
-	active: (a, b) => lastSeen(b).localeCompare(lastSeen(a)) || a.name.localeCompare(b.name),
+const newestFirst = (a: Project, b: Project) => lastSeen(b).localeCompare(lastSeen(a)) || a.name.localeCompare(b.name);
+
+const BY_SECTION: Record<Section, (a: Project, b: Project) => number> = {
+	active: newestFirst,
+	tangled: newestFirst,
 	popular: (a, b) => (b.stars ?? 0) - (a.stars ?? 0) || a.name.localeCompare(b.name),
 	archived: (a, b) => a.name.localeCompare(b.name)
 };
 
-/** Projects grouped by status in STATUSES order, active work first, empty groups left out. */
+/** Which section a project is listed in: archived wins, then tangled, then its status. */
+export const sectionOf = (project: Project): Section =>
+	project.status !== 'archived' && project.forge === 'tangled' ? 'tangled' : project.status;
+
+/** Projects grouped into SECTIONS, in that order, empty sections left out. */
 export const groupProjects = (projects: Project[]): ProjectGroup[] =>
-	STATUSES.map((status) => ({
-		status,
-		projects: projects.filter((project) => project.status === status).toSorted(BY_STATUS[status])
+	SECTIONS.map((section) => ({
+		section,
+		projects: projects.filter((project) => sectionOf(project) === section).toSorted(BY_SECTION[section])
 	})).filter((group) => group.projects.length > 0);
 
 const REGISTRIES: Record<string, string> = {

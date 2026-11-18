@@ -1,7 +1,18 @@
 import { describe, expect, it } from 'vitest';
 import { load as loadIndex } from './+page.server.ts';
 import { entries, load as loadProject } from './[slug]/+page.server.ts';
+import { GET as projectOg, entries as ogEntries } from './[slug]/og.png/+server.ts';
+import { GET as indexOg } from './og.png/+server.ts';
 import { GET as sitemap } from './sitemap.xml/+server.ts';
+
+/** A PNG's width and height, from its header. */
+const pngSize = async (response: Response) => {
+	const bytes = new DataView(await response.arrayBuffer());
+
+	return { signature: bytes.getUint32(0), width: bytes.getUint32(16), height: bytes.getUint32(20) };
+};
+
+const OG_SIZE = { signature: 0x89504e47, width: 1200, height: 630 };
 
 // Run against the real content files with no GitHub token (see vite.config.ts), as an offline build would.
 type LoadEvent<T extends (...args: never[]) => unknown> = Parameters<T>[0];
@@ -11,14 +22,12 @@ const event = <T extends (...args: never[]) => unknown>(fields: object) =>
 	fields as LoadEvent<T>;
 
 describe('routes', () => {
-	it('lays the index out as binder pages, active first, numbered straight through', async () => {
-		const { pages, total } = await loadIndex();
+	it('groups the index with active work first and every project once', async () => {
+		const { groups } = await loadIndex();
+		const slugs = groups.flatMap((group) => group.projects.map(({ slug }) => slug));
 
-		expect(pages[0].group.status).toBe('active');
-		expect(pages.map(({ first }) => first)).toEqual(
-			pages.map((_, index) => 1 + pages.slice(0, index).reduce((sum, { group }) => sum + group.projects.length, 0))
-		);
-		expect(pages.reduce((sum, { group }) => sum + group.projects.length, 0)).toBe(total);
+		expect(groups.map(({ section }) => section)).toEqual(['active', 'tangled', 'popular']);
+		expect(new Set(slugs).size).toBe((await entries()).length);
 	});
 
 	it('prerenders a page per content file', async () => {
@@ -28,13 +37,24 @@ describe('routes', () => {
 		expect(slugs).toContain('upvote.at');
 	});
 
-	it("loads a project with its place in the binder, and 404s one that isn't there", async () => {
+	it("loads a project, and 404s one that isn't there", async () => {
 		const found = await loadProject(event<typeof loadProject>({ params: { slug: 'docov' } }));
 
 		expect(found.project.name).toBe('docov');
-		expect(found.number).toBeGreaterThanOrEqual(1);
-		expect(found.number).toBeLessThanOrEqual(found.total);
 		await expect(loadProject(event<typeof loadProject>({ params: { slug: 'nope' } }))).rejects.toMatchObject({
+			status: 404
+		});
+	});
+
+	it("draws a 1200 by 630 preview image for the index and for every project, and 404s one that isn't there", async () => {
+		const index = await indexOg(event<typeof indexOg>({}));
+		const project = await projectOg(event<typeof projectOg>({ params: { slug: 'docov' } }));
+
+		expect(index.headers.get('content-type')).toBe('image/png');
+		expect(await pngSize(index)).toEqual(OG_SIZE);
+		expect(await pngSize(project)).toEqual(OG_SIZE);
+		expect((await ogEntries()).length).toBe((await entries()).length);
+		await expect(projectOg(event<typeof projectOg>({ params: { slug: 'nope' } }))).rejects.toMatchObject({
 			status: 404
 		});
 	});

@@ -1,304 +1,348 @@
 ---
 name: cutenode
-description: cute lil' node projects, kept as cards in a collector's binder.
+description: cute lil' node projects, as a hairline index on a quiet page.
 colors:
-  brand: '#ff00cc'
-  accent: 'oklch(0.5 0.24 340)'
-  accent-dark: 'oklch(0.78 0.18 340)'
-  set-popular: 'oklch(0.82 0.15 82)'
-  set-archived: 'oklch(0.76 0.03 260)'
-  card-face: 'oklch(0.985 0.006 330)'
-  card-ink: 'oklch(0.2 0.03 330)'
-  card-ink-soft: 'oklch(0.42 0.035 330)'
-  card-art: 'oklch(0.21 0.04 330)'
-  page: 'oklch(0.95 0.012 330)'
-  page-dark: 'oklch(0.15 0.012 330)'
-  pocket: 'oklch(0.985 0.006 330 / 0.75)'
-  pocket-dark: 'oklch(0.21 0.014 330 / 0.85)'
-  weld: 'oklch(0.86 0.016 330)'
-  weld-dark: 'oklch(0.3 0.016 330)'
-  ink: 'oklch(0.22 0.03 330)'
-  ink-dark: 'oklch(0.95 0.01 330)'
-  ink-soft: 'oklch(0.43 0.035 330)'
-  ink-soft-dark: 'oklch(0.79 0.025 330)'
+  paper: '#ffffff'
+  paper-dark: '#000000'
+  ink: '#000000'
+  ink-dark: '#ffffff'
+  ink-soft: '#5e5e5e'
+  ink-soft-dark: '#a6a6a6'
+  rule: '#d4d4d4'
+  rule-dark: '#333333'
+  rule-strong: '#000000'
+  rule-strong-dark: '#ffffff'
 typography:
   display:
-    fontFamily: 'Anybody Variable, Arial Narrow, sans-serif'
-    fontSize: 'clamp(2.25rem, 5.5vw, 4.75rem)'
-    fontWeight: 900
-    lineHeight: 0.95
-    letterSpacing: '-0.035em'
-    fontVariation: "'wdth' 140"
+    fontFamily: 'Mona Sans, system-ui, sans-serif'
+    fontSize: 'clamp(3rem, 10.5vw, 10.5rem)'
+    fontWeight: 300
+    lineHeight: 0.92
+    letterSpacing: '-0.055em'
+  display-page:
+    fontFamily: 'Mona Sans, system-ui, sans-serif'
+    fontSize: 'clamp(3rem, 10vw, 9.5rem)'
+    fontWeight: 300
+    lineHeight: 0.92
+    letterSpacing: '-0.055em'
   headline:
-    fontFamily: 'Anybody Variable, Arial Narrow, sans-serif'
-    fontSize: 'clamp(2.25rem, 6vw, 3.75rem)'
-    fontWeight: 850
-    lineHeight: 1.05
-    letterSpacing: '-0.02em'
-    fontVariation: "'wdth' 130"
-  headline-project:
-    fontFamily: 'Anybody Variable, Arial Narrow, sans-serif'
-    fontSize: 'clamp(2.4rem, 7vw, 4.5rem)'
-    fontWeight: 900
-    lineHeight: 1.05
-    letterSpacing: '-0.03em'
-    fontVariation: "'wdth' 120"
-  wordmark:
-    fontFamily: 'Anybody Variable, Arial Narrow, sans-serif'
-    fontSize: '1.35rem'
-    fontWeight: 800
-    letterSpacing: '-0.02em'
-    fontVariation: "'wdth' 115"
-  card-name:
-    fontFamily: 'Anybody Variable, Arial Narrow, sans-serif'
-    fontSize: '1.2rem'
-    fontWeight: 800
-    lineHeight: 1.1
-    letterSpacing: '-0.01em'
-    fontVariation: "'wdth' 72"
+    fontFamily: 'Mona Sans, system-ui, sans-serif'
+    fontSize: 'clamp(2.5rem, 6vw, 5.5rem)'
+    fontWeight: 300
+    lineHeight: 1
+    letterSpacing: '-0.045em'
+  lead:
+    fontFamily: 'Mona Sans, system-ui, sans-serif'
+    fontSize: 'clamp(1.25rem, 2.1vw, 1.9rem)'
+    fontWeight: 300
+    lineHeight: 1.25
+    letterSpacing: '-0.015em'
+  title:
+    fontFamily: 'Mona Sans, system-ui, sans-serif'
+    fontSize: 'clamp(1.35rem, 2vw, 1.75rem)'
+    fontWeight: 400
+    lineHeight: 1
+    letterSpacing: '-0.025em'
   body:
-    fontFamily: 'Atkinson Hyperlegible Next Variable, system-ui, sans-serif'
-    fontSize: '1.0625rem'
+    fontFamily: 'Mona Sans, system-ui, sans-serif'
+    fontSize: '1rem'
     fontWeight: 400
-    lineHeight: 1.55
-  body-lead:
-    fontFamily: 'Atkinson Hyperlegible Next Variable, system-ui, sans-serif'
-    fontSize: '1.25rem'
+    lineHeight: 1.5
+  body-prose:
+    fontFamily: 'Mona Sans, system-ui, sans-serif'
+    fontSize: '1.15rem'
     fontWeight: 400
-    lineHeight: 1.55
-  card-text:
-    fontFamily: 'Atkinson Hyperlegible Next Variable, system-ui, sans-serif'
-    fontSize: '0.9rem'
-    fontWeight: 400
-    lineHeight: 1.4
+    lineHeight: 1.6
   label:
-    fontFamily: 'Atkinson Hyperlegible Next Variable, system-ui, sans-serif'
+    fontFamily: 'JetBrains Mono, ui-monospace, SF Mono, Menlo, monospace'
     fontSize: '0.72rem'
-    fontWeight: 700
-    letterSpacing: '0.06em'
-  mono:
-    fontFamily: 'ui-monospace, SF Mono, Menlo, Consolas, monospace'
-    fontSize: '0.9em'
-rounded:
-  focus: '2px'
-  pocket: '0.3rem'
-  window: '0.4rem'
-  code: '0.6rem'
-  card: '0.85rem'
-  card-large: '1.1rem'
-  pill: '999px'
+    fontWeight: 400
+    letterSpacing: '0.04em'
 spacing:
-  weld: '3px'
-  frame: '0.5rem'
-  frame-large: '0.75rem'
-  pocket: 'clamp(0.6rem, 1.6vw, 1rem)'
-  gutter: 'clamp(1rem, 4vw, 3rem)'
-  binder-page: 'clamp(2.5rem, 6vw, 4.5rem)'
+  margin: 'clamp(1rem, 3.5vw, 2.5rem)'
+  gap: 'clamp(0.75rem, 1.6vw, 1.25rem)'
+  row: '1.1rem 0 1.25rem'
+  block-tight: 'clamp(2.5rem, 7vw, 5rem)'
+  block: 'clamp(3rem, 8vw, 6rem)'
+  intro-top: 'clamp(5rem, 16vw, 13rem)'
+  page-top: 'clamp(4rem, 12vw, 9rem)'
+  page-section: '1.25rem 0 clamp(2.5rem, 6vw, 4.5rem)'
+  section: 'clamp(6rem, 14vw, 11rem)'
+  footer-top: 'clamp(6rem, 16vw, 12rem)'
 components:
-  card-active:
-    backgroundColor: '{colors.brand}'
-    textColor: '{colors.card-ink}'
-    rounded: '{rounded.card}'
-    padding: '{spacing.frame}'
-  card-popular:
-    backgroundColor: '{colors.set-popular}'
-    textColor: '{colors.card-ink}'
-    rounded: '{rounded.card}'
-    padding: '{spacing.frame}'
-  card-archived:
-    backgroundColor: '{colors.set-archived}'
-    textColor: '{colors.card-ink}'
-    rounded: '{rounded.card}'
-    padding: '{spacing.frame}'
-  card-name-bar:
-    backgroundColor: '{colors.card-face}'
-    textColor: '{colors.card-ink}'
-    typography: '{typography.card-name}'
-    rounded: '{rounded.window}'
-    padding: '0.35rem 0.65rem'
-    height: '2.6rem'
-  card-art-window:
-    backgroundColor: '{colors.card-art}'
-    padding: '0.6rem'
-  sleeve-pocket:
-    backgroundColor: '{colors.pocket}'
-    rounded: '{rounded.pocket}'
-    padding: '{spacing.pocket}'
-  link-pill-primary:
+  nav-link:
+    textColor: '{colors.ink}'
+    typography: '{typography.label}'
+    height: '2.75rem'
+  column-labels:
+    textColor: '{colors.ink-soft}'
+    typography: '{typography.label}'
+    padding: '0.6rem 0'
+  index-row:
+    textColor: '{colors.ink}'
+    padding: '{spacing.row}'
+  index-row-name:
+    textColor: '{colors.ink}'
+    typography: '{typography.title}'
+  index-row-description:
+    textColor: '{colors.ink-soft}'
+    typography: '{typography.body}'
+  meta-label:
+    textColor: '{colors.ink-soft}'
+    typography: '{typography.label}'
+  facts-row:
+    textColor: '{colors.ink}'
+    padding: '0.8rem 0'
+  page-section:
+    textColor: '{colors.ink}'
+    padding: '{spacing.page-section}'
+  page-section-label:
+    textColor: '{colors.ink-soft}'
+    typography: '{typography.label}'
+  command-line:
+    textColor: '{colors.ink}'
+    padding: '0.9rem 0'
+  command-copy:
+    textColor: '{colors.ink}'
+    typography: '{typography.label}'
+    padding: '0 0.75rem'
+    height: '2.75rem'
+    width: '4.5rem'
+  command-copy-hover:
     backgroundColor: '{colors.ink}'
-    textColor: '{colors.page}'
-    rounded: '{rounded.pill}'
-    padding: '0.4rem 1rem'
-    height: '2.75rem'
-  link-pill:
+    textColor: '{colors.paper}'
+  skip-link:
+    backgroundColor: '{colors.ink}'
+    textColor: '{colors.paper}'
+    padding: '0.5rem 0.9rem'
+  logo-mark:
     textColor: '{colors.ink}'
-    rounded: '{rounded.pill}'
-    padding: '0.4rem 1rem'
-    height: '2.75rem'
-  link-pill-hover:
-    backgroundColor: '{colors.brand}'
-    textColor: '{colors.card-ink}'
-  count-chip:
-    backgroundColor: '{colors.weld}'
-    textColor: '{colors.ink}'
-    rounded: '{rounded.pill}'
-    padding: '0 0.45em'
+    width: '1em'
+    height: '1.1em'
 ---
 
 # Design System: cutenode
 
 ## Overview
 
-**Creative North Star: "The Collector's Binder"**
+**Creative North Star: "The Hairline Index"**
 
-Every project is a printed trading card sitting in a clear sleeve pocket, and the site is the binder that holds them. The binder pages are the only part that follows the theme: a pale pink-grey page in light, a classic near-black page in dark. The cards are print objects and look the same in both. The binder is sorted into sets by status, with the active set on the first page, then popular, then archived.
+The site is a ruled list on a quiet page. The owner's brief was "go look at awwwards and let's implement it in a hyper-minimal way with a lot of whitespace and thin lines", and later "I want the cutenode site to be black and white and not bold". The build takes both literally: black ink on white paper, a 12-column grid with wide margins, light type at large sizes, and hairline rules as almost the only thing drawn. The projects read like rows in a catalogue. Name on the left, what it is in the middle, then where it lives, its stars and its year in small mono capitals.
 
-The density is a real binder sheet: pockets packed edge to edge with a thin weld between them, cards filling each pocket. Around that, the page is quiet and lowercase, with a huge wide display face doing the talking and a calm, very legible body face for everything else. The one moving part is the foil on active cards, which catches the light where the pointer or focus is.
+Whitespace does the work that boxes, tiles and color would do elsewhere. Blocks sit far apart (up to 13rem at the top of the page), and a section starts with a big light heading and a column of labels over its first rule. There is no color at all: the logo, link underlines, hover and focus are all ink, and greys only step text and rules down a level. Nothing is bold. Motion is small and costs nothing. A row's name underlines from the left and its text steps over a few pixels on hover, and the closing rule of each list draws itself across as it scrolls into view. Light and dark get the same care; the page follows the system setting.
 
-The world was built to refuse the GitHub-clone grid of repo tiles with a language dot. A project here is a card with an art window, a type line and a collector number.
+Each project gets a landing page in the same voice: its name at display size, its tagline, one way in (its own site or an install command to copy), then ruled sections with a small label on the left. The preview image for every page is drawn at build time in the same black-on-white hairline style.
+
+The owner rejected two earlier directions: a trading-card binder and a flashy launch page with glowing gradients.
 
 **Key Characteristics:**
 
-- Theme-following binder page, theme-proof printed cards.
-- Three sets, each with its own frame ink: magenta active, marigold popular, slate archived.
-- Anybody's width axis carries the hierarchy: very wide for page voice, condensed for card names.
-- A hex identicon from the project slug fills every art window.
-- Foil and a slight tilt on active cards only; reduced motion keeps the foil and drops the tilt.
+- Black and white: paper, ink, one quieter grey for text, and two weights of hairline.
+- No color anywhere. The logo, link underlines, hover and focus are ink.
+- A strict 12-column grid with clamp() margins that every block snaps to.
+- Light sans display (weight 300) with tight negative tracking, set very large; everything else at 400, and nothing bold.
+- Small uppercase mono for every label and metadata value.
+- Links always underlined at the hairline width.
+- Hairlines that drop to 0.5px on 2x screens.
+- No radius, no shadow, no fill behind content.
 
 ## Colors
 
-A cool magenta-tinted neutral binder with three bright set inks on cards, and the logo's pure magenta reserved for the brand.
-
-### Primary
-
-- **Logo Magenta** (`brand`): the cutenode hexagon, the frame of every active card, the identicon on active cards, text selection, and the fill when a link pill is hovered. Always sits behind dark ink (`card-ink`), never used as text on the page.
-- **Link Magenta** (`accent` in light, `accent-dark` in dark): body links, the focus ring, and native control accents. It is the text-safe version of the brand on the binder page.
-
-### Secondary
-
-- **Marigold** (`set-popular`): frame and identicon ink for the popular set.
-
-### Tertiary
-
-- **Slate** (`set-archived`): frame and identicon ink for the archived set.
+Black and white, with greys only where hierarchy needs them. Every value has a light and a dark form (CSS `light-dark()`), and there is no hue.
 
 ### Neutral
 
-- **Card Stock** (`card-face`): the near-white face of every card panel (name bar, type line, text, footer). Same in both themes.
-- **Print Ink** (`card-ink`) and **Faded Print** (`card-ink-soft`): text on card stock, and the type line and footer.
-- **Art Window Black** (`card-art`): the dark plum ground of the art window, lit by a soft glow of the set color. Also the ground of code blocks on project pages.
-- **Binder Page** (`page`, `page-dark`): the site background.
-- **Clear Sleeve** (`pocket`, `pocket-dark`): the translucent pocket fill, with a white sheen gradient across its top corner.
-- **Weld** (`weld`, `weld-dark`): pocket outlines, section rules, the footer rule, the count chip and inline code.
-- **Page Ink** (`ink`, `ink-dark`) and **Soft Page Ink** (`ink-soft`, `ink-soft-dark`): text on the binder page.
+- **Paper** (paper / paper-dark): the page ground. Pure white in light, pure black in dark. The theme-color meta tags match it.
+- **Ink** (ink / ink-dark): headings, names, body copy, the logo and favicon, hovered link underlines, the row name's drawn underline, the 1px focus outline, the selection highlight (ink ground, paper text) and the copy button's hover fill.
+- **Soft Ink** (ink-soft / ink-soft-dark): every mono label, row descriptions, section counts, answers in a questions section, and the resting link underline. 6.5:1 on white, 8.6:1 on black.
+- **Hairline** (rule / rule-dark): the rules between rows, between facts, between items in a project page's lists, and above and below commands and the usage example. Deliberately faint (1.5:1 in light, 1.7:1 in dark); it separates, it doesn't frame.
+- **Strong Hairline** (rule-strong / rule-strong-dark): the same value as ink. Marks the start and end of a structure: the nav rules, the top of each column-label row, the closing rule of each list, the top of the facts list, the top of each project page section and the footer. It also draws the copy button's border.
 
 ### Named Rules
 
-**The Printed Card Rule.** Card colors never change with the theme. Only the binder (page, pocket, weld, page ink, accent) uses `light-dark()`.
+**The No Color Rule.** The site is black and white. Greys are allowed only to set hierarchy, and every grey that carries text clears WCAG AA in both themes. No hue, no tinted text, no colored logo.
 
-**The Three Sets Rule.** A card's frame ink comes from its status and nothing else. There are three sets and three inks; a new status needs a new set ink, not a reuse.
+**The Underline Rule.** With no color to mark them, links are always underlined: a hairline in Soft Ink at rest that darkens to Ink on hover. Only the nav links and index row names drop the text underline, because a rule or a drawn underline stands in for it: a nav link's rule doubles on hover (an inset shadow, so nothing moves), and an index row's name underlines from the left.
 
-**The Logo Magenta Rule.** `#ff00cc` is a fill, never page text. Links and focus use the accent, which holds contrast on both binder pages.
+**The Two Hairlines Rule.** Rules come in two strengths only. The faint one separates items inside a list; the ink-strength one opens or closes a structure.
+
+**The Equal Schemes Rule.** Every neutral is defined as a light and dark pair in one `light-dark()` declaration. A color that only exists in one scheme is a bug.
 
 ## Typography
 
-**Display Font:** Anybody Variable (with Arial Narrow, sans-serif)
-**Body Font:** Atkinson Hyperlegible Next Variable (with system-ui, sans-serif)
-**Label/Mono Font:** ui-monospace stack, for code only
+**Display Font:** Mona Sans (with system-ui, sans-serif)
+**Body Font:** Mona Sans (with system-ui, sans-serif)
+**Label/Mono Font:** JetBrains Mono (with ui-monospace, SF Mono, Menlo, monospace)
 
-**Character:** Anybody is loud, round and stretchy; its width axis lets one family be both a poster headline and a squeezed card title. Atkinson Hyperlegible Next keeps every description and fact plain and easy to read. Both faces are preloaded so the first paint uses them.
+**Character:** One sans at two weights, light and regular, carries everything readable, and a mono in small capitals carries everything that is data. The contrast between huge light headings and tiny mono labels is the whole hierarchy.
+
+Only three static Fontsource files ship: Mona Sans 300 and 400 and JetBrains Mono 400. The layout imports and preloads all three so the first paint uses them, and the preview image renderer reads the same three weights.
 
 ### Hierarchy
 
-- **Display** (900, `clamp(2.25rem, 5.5vw, 4.75rem)`, 0.95, width 140%): the index tagline, capped at 16ch.
-- **Headline** (850, `clamp(2.25rem, 6vw, 3.75rem)`, 1.05, width 130%): binder page names (active, popular, archived), followed on the same baseline by a soft one-line blurb and a count chip.
-- **Headline, project** (900, `clamp(2.4rem, 7vw, 4.5rem)`, width 120%): the project name on its page. The error page uses the same voice at width 125%.
-- **Wordmark** (800, 1.35rem, width 115%): "cutenode" beside the hexagon.
-- **Card name** (800, 1.2rem, 1.1, width 72%): the name bar. Large cards use 1.75rem, or 1.35rem on phones.
-- **Body** (400, 1.0625rem, 1.55): page text; prose capped at 68ch, intro and lead at 40rem. The project lead is 1.25rem in soft ink.
-- **Card text** (400, 0.9rem, 1.4): the description on a card; 1rem on large cards.
-- **Label** (700, 0.72rem, 0.06em, uppercase): the card type line ("active / github") and the fact labels on project pages (0.75rem there). Card footers use the same size in sentence case with tabular numbers.
+- **Display** (display): the home tagline across all 12 columns. Project and error pages use a slightly smaller step (display-page) for the project name or error line.
+- **Headline** (headline): section names (active, tangled, popular, archived), each with its count as a mono superscript in parentheses.
+- **Lead** (lead): the one statement under a display heading, set light in the right half (columns 7 to 12). Used for the home intro, the tagline on a project page, and the error note.
+- **Title** (title): project names in the index rows.
+- **Body** (body): row descriptions in Soft Ink, and the base size for everything else. A project page's about section uses body-prose with a 62ch measure. Questions and links on a project page step up to 1.1rem.
+- **Label** (label, uppercase): the `.meta` voice. Column labels, kind, stars, year, section blurbs, the intro caption, fact labels, project page section labels, the breadcrumb, the copy button and the whole footer. Numbers use tabular figures.
 
 ### Named Rules
 
-**The Width Axis Rule.** Hierarchy on the page comes from width as much as size: page voice is set wide (115% to 140%), card names condensed (72%) so long names fit the bar. Prose subheads go back to 100%.
+**The Light Weight Rule.** Display, headline, lead and a project page's visit link sit at weight 300 with negative tracking (-0.015em to -0.055em). Every other role is 400. No other weight loads.
 
-**The Lowercase Voice Rule.** Headings, links and labels are written in lowercase. The only uppercase is applied by `text-transform` on small tracked labels.
+**The No Bold Rule.** Nothing is bold, emphasis included: `strong`, `b` and `th` are set to 400. Hierarchy comes from size, spacing, case and rules.
+
+**The Mono Is Data Rule.** If it's a label, a count, a date, a registry or a column name, it's small uppercase mono in Soft Ink. Sentences are never mono.
 
 ## Layout
 
-One centered column, at most 80rem wide, with a fluid gutter (`clamp(1rem, 4vw, 3rem)`). The index runs masthead, intro, then one binder page per set, each separated by `clamp(2.5rem, 6vw, 4.5rem)`.
+Everything sits on a 12-column grid (`repeat(12, minmax(0, 1fr))`) with the gap token between columns and the margin token on both sides of the page. The header, every section, every index row, the project page and the footer each declare the same grid, so their columns line up down the page.
 
-A binder page is a sleeve sheet: an auto-fill grid of pockets at least 15.5rem wide, packed with a 3px weld gap. Each pocket holds one card at the 63:88 trading-card ratio. Below 40rem the sheet is a single column and every card turns landscape: the art window becomes a 6.5rem column on the left and the card panels stack on the right, so a column of cards stays scannable.
+- **Header:** logo and name in columns 1 to 3; four links in columns 5 to 12, each in its own equal column.
+- **Intro:** the tagline across all 12 columns; below it a two-line mono caption in columns 1 to 3 and the lead statement in columns 7 to 12.
+- **Index:** section heading in columns 1 to 8 with its blurb right-aligned in 9 to 12. Then the column labels and rows: name 1 to 4, about 5 to 8, kind 9 to 10, stars 11, year 12. Stars and year are right-aligned.
+- **Project page, top:** breadcrumb and name across the full width; the tagline and the main action below it in columns 7 to 12; the facts list in columns 1 to 4 beside them.
+- **Project page, sections:** each section is its own grid row under a strong hairline, with its label in columns 1 to 4 and its content in 7 to 12.
+- **Footer:** name in 1 to 3, source note in 5 to 9, org link right-aligned in 10 to 12.
 
-A project page shows the card large beside the write-up. From 56rem it is two columns (a 22rem card slot that sticks 2rem from the top, then the article); below that the card sits above the article at up to 24rem wide. Facts sit in a wrapping row between two weld rules.
+Vertical rhythm is set by a few clamp() steps: intro-top above the tagline, block between the tagline and the statement (block-tight on project and error pages), section above each index, footer-top above the footer. A project page starts at page-top and ends its top block with block; each of its sections pads by page-section. Rows are tight (row padding) so the index scans as one list.
+
+Under 48rem (the `max-width: 47.99rem` query) every block goes full width. Index rows reflow to name and year on one line, the description below, then kind and stars. Only the "name" column label stays visible. The header links stay four across on their own line. On a project page the tagline, action and facts stack, each section's label sits above its content, and option rows drop to one column.
 
 ## Elevation & Depth
 
-The binder is flat: pages, pockets and rules have no shadow, and pockets read as plastic through a translucent fill, a white sheen in the top corner and a 1.5px weld outline. Cards are the only objects with a shadow, because they are physical things sitting in the sleeves. A linked card lifts on hover or focus, and tilts up to 6 degrees toward a mouse pointer.
-
-### Shadow Vocabulary
-
-- **Card at rest** (`box-shadow: 0 1px 1px oklch(0.2 0.03 330 / 0.12), 0 6px 16px -6px oklch(0.2 0.03 330 / 0.3)`): every card.
-- **Card lifted** (`box-shadow: 0 2px 2px oklch(0.2 0.03 330 / 0.12), 0 18px 32px -12px oklch(0.2 0.03 330 / 0.45)`): a linked card on hover or focus.
+Flat. There are no shadows and no layered surfaces, and nothing has a background fill at rest. The only fills are states: the copy button inverts to ink on hover, the skip link is an ink block while focused, and selected text takes an ink ground. Depth comes only from whitespace and from the two hairline strengths: a strong rule opens a structure, faint rules divide it.
 
 ### Named Rules
 
-**The Only Cards Cast Shadows Rule.** Nothing on the binder page gets a shadow. If it is not a card, depth comes from the sleeve material or a weld line.
-
-**The Foil Rule.** Only active cards carry foil: a soft-light rainbow band at 35% that rises to full when the card is hovered or focused, following the pointer. With reduced motion the foil still follows the pointer but the card stays flat and nothing animates.
+**The Nothing Floats Rule.** No element sits above another. If something needs separation, it gets space or a hairline, never a shadow or a filled panel.
 
 ## Shapes
 
-Rounded rectangles throughout, matching real card stock: cards at 0.85rem (1.1rem large), the panels inside them at 0.4rem so the set frame shows as an even border, pockets at a tight 0.3rem. Pills (999px) are for link buttons and the count chip. The hexagon is the brand's one silhouette: the logo, the identicon frame and every identicon cell, all with mitered joins.
+No radius anywhere. The lines are horizontal rules at the hairline width (1px, or 0.5px on screens of 2dppx and up) and the 1px focus outline. Commands and the usage example sit between a top and bottom hairline with no fill. Two shapes close: the logo, an outlined hexagon stroked in Ink with mitred corners at 1em wide next to the wordmark, and the copy button, a square-cornered box drawn with a Strong Hairline.
+
+### Named Rules
+
+**The Open Line Rule.** Rules run horizontally across columns and never close into boxes, cards or pills. The copy button is the one exception, since it is the site's only button.
 
 ## Components
 
-### Trading card
-
-The signature. A frame of set ink (0.5rem, 0.75rem on large cards) around a fixed anatomy, top to bottom: name bar (name, plus star count for GitHub projects, held at 2.6rem so art windows line up), art window (5:3, dark ground, set-color glow, hex identicon), type line (status / forge, with a set-tinted rule under it), description, and footer (pushed or started month, collector number like `03/30`). On the index the name is a link whose hit area covers the whole card; on a project page the card is a decorative picture hidden from assistive tech.
-
-### Sleeve pocket
-
-A translucent cell with a 1.5px weld outline and a 0.3rem radius, padded `clamp(0.6rem, 1.6vw, 1rem)`, packed with a 3px gap. Holds exactly one card.
-
-### Hex identicon
-
-A slug-seeded honeycomb of small hexagons inside a hexagon frame, filled cells in set ink and empty cells as faint set-ink outlines. Decorative only.
-
-### Buttons (link pills)
-
-- **Shape:** full pill (999px), at least 2.75rem tall, 1.5px border in page ink, bold body text with a small external-link icon.
-- **Primary:** the first link on a project page is filled with page ink and uses page color for text.
-- **Hover:** fills with Logo Magenta and dark print ink, over 0.2s.
-
-### Chips
-
-- **Count chip:** a weld-colored pill with bold tabular numbers beside each binder page's blurb.
-
 ### Navigation
 
-The masthead is the hexagon and the wordmark, linking home. Project pages add an "all projects" back link with an arrow icon. A skip link sits off screen until focused. The footer is a soft-ink line over a weld rule.
+Mono labels standing on their own rules.
 
-### Focus
+- **Style:** each link (and the home link with the logo) is a 2.75rem tall block in label type with a strong hairline under it, no text underline.
+- **Hover:** the code sets the rule under each of the four links to Ink on hover, which is the value it already has, so there is no visible hover change. The home link has no hover state either.
+- **Mobile:** the home link takes the first line full width, the four links share the second line.
 
-A 3px accent outline offset 3px, everywhere. On cards it draws around the whole card, not the name.
+### Text Links
+
+- **Rest:** underlined at the hairline width in Soft Ink, offset 0.25em.
+- **Hover:** the underline darkens to Ink (0.2s, only when motion is allowed).
+- **Focus:** 1px Ink outline, 4px offset.
+
+### Index Row (signature)
+
+The core of the site: one project per line between hairlines.
+
+- **Structure:** a list item on the 12-column grid with a faint hairline on top; name (title type, h3), description (body, Soft Ink), then kind, stars and year in label type. Long names get a break opportunity after each dot and dash.
+- **Hit area:** the whole row is the link, through a pseudo-element on the name's anchor; the name is the link's only text.
+- **Hover / Focus within:** the name's underline draws in from the left at the hairline width in Ink, and the name and description shift 0.35rem to the right (0.35s on the shared ease).
+- **Keyboard focus:** a 1px Ink outline around the whole row.
+- **Reduced motion:** the underline appears without a transition and nothing shifts.
+
+### Column Labels
+
+A table head for sighted readers: name, about, kind, stars, year in label type over a strong hairline, aligned to the row columns. Hidden from screen readers, since each row says the same in its own text.
+
+### Section Heading
+
+A headline-size section name with its project count beside it as a mono superscript in parentheses, and a one-line blurb in label type right-aligned on the same baseline.
+
+### List End Rule
+
+Each index ends with a strong hairline. It is the page's only scroll motion: where scroll-driven animations are supported and motion is allowed, it scales from 0 to full width from the left as it enters the viewport (a view timeline over the entry range). Otherwise it is simply there.
+
+### Project Page (signature)
+
+A landing page per project, in two tiers plus a short form, all sharing one layout.
+
+- **Top:** a breadcrumb ("index / status"), the name in display-page type, the tagline in lead type, then one main action. A project with its own site gets "visit <host>", a large light link (clamp(1.25rem, 2vw, 1.6rem), weight 300) with an Ink underline. Otherwise the first install command shows as a Command Block, and with no install command the action is "see it on <forge>". The facts list sits beside them.
+- **Sections, in order:** about (the content file's write-up), get started, usage, features, options, compatibility, questions, links. Each is a Page Section and appears only when the project has that content. Get started appears only when it adds something to the top: more than one install command, or any install command on a project whose main action is its site.
+- **Tiers:** homepage projects (`homepage: true`, no site of their own) are the only ones that can carry options, compatibility and questions. Projects with their own site send people there. The rest get the short form: top, about, get started, usage and features when present, and links.
+- **Inside a section:** lists and definitions are ruled rows, a faint hairline above the first and below each, 0.8rem padding. Options pair a code name with its description and a mono "default" line below. Compatibility uses the facts list's label and value rows. Questions set the question at 1.1rem and the answer in Soft Ink. Usage is one code example between faint hairlines in 0.9rem mono, scrolling sideways when long. Links is always there: the repo and its issues, plus the website, registry, docs, changelog and latest release when they exist.
+
+### Page Section
+
+One section of a project page: a strong hairline on top, its name small on the left, the content on the right.
+
+- **Structure:** a section on the 12-column grid, labelled by its own h2. The h2 is in label type (Soft Ink, uppercase mono) in columns 1 to 4; the content fills 7 to 12 and can shrink so long code scrolls instead of widening the page.
+- **Spacing:** page-section padding (1.25rem above the content, more below).
+- **Mobile:** label and content each take the full width, label first.
+
+### Command Block
+
+A command to run, copyable in one move.
+
+- **Structure:** an optional label in label type, then one line between faint hairlines (0.9rem padding): the command in 0.9rem mono on the left and a copy button on the right. A long command scrolls sideways, and its scroll area takes keyboard focus.
+- **Selection:** the command text selects as one piece (`user-select: all`), so one click grabs all of it.
+- **Copy button:** "copy" in label type, Ink text, a Strong Hairline border, no fill, at least 2.75rem tall and 4.5rem wide. On hover it inverts to an Ink fill with Paper text. After a click it reads "copied" for two seconds. If the clipboard refuses, the command is selected instead so a keyboard copy takes it.
+- **Status:** a visually hidden status line announces "copied" or the selection fallback to screen readers.
+
+### Facts List
+
+At the top of a project page: a definition list under a strong hairline, each row a 7rem label column in label type and a value, divided by faint hairlines. The rows are status, stars (GitHub projects), latest release with its date, and last push (or the start date when there's no push).
+
+### Preview Image
+
+Every page has its own 1200 by 630 PNG, drawn at build time in the site's style and always light: white ground, black ink. Across the top, "cutenode" and the site's host in uppercase mono over a 1.5px black rule. Then the project name (or the home tagline) large in Mona Sans 300 with tight tracking, its description below in Soft Ink, and small mono labels in Soft Ink along a faint 1.5px rule at the bottom (forge, stars and year for a project; the project count, github and tangled for the home page).
+
+### Logo Mark
+
+The cutenode hexagon as inline SVG, stroked in Ink, sized to the text beside it. The favicon is the same hexagon, black on light and white on dark.
+
+### Skip Link
+
+Hidden above the page until focused, then an ink block with paper text in mono capitals at the top left margin.
 
 ## Do's and Don'ts
 
 ### Do:
 
-- **Do** keep the card anatomy in its order: name bar, art window, type line, description, footer with collector number.
-- **Do** color a card's frame and identicon by its set: `brand` for active, `set-popular`, `set-archived`.
-- **Do** keep card colors fixed across themes and let only the binder change.
-- **Do** set page headings in Anybody wide (115% to 140%) and card names condensed (72%).
-- **Do** turn cards landscape in a single column below 40rem.
-- **Do** give reduced-motion users the still foil: no tilt, no transitions.
+- **Do** put every new block on the 12-column grid with the margin and gap tokens, and line its columns up with the index (name 1 to 4, about 5 to 8, kind 9 to 10, stars 11, year 12).
+- **Do** separate things with space first and a hairline second, using the faint rule inside a list and the strong rule to open or close one.
+- **Do** set labels, counts, dates and registries in uppercase mono label type in Soft Ink, with tabular figures for numbers.
+- **Do** keep display, headline and lead at weight 300 and tightly tracked, and everything else at 400.
+- **Do** keep everything black, white and grey, and check any new grey that carries text against AA on both #ffffff and #000000.
+- **Do** underline every text link, Soft Ink at rest and Ink on hover.
+- **Do** give a new project page section a Page Section: label in columns 1 to 4, content in 7 to 12, strong hairline on top.
+- **Do** give every color a light and dark value and check both.
+- **Do** wrap any new motion in `prefers-reduced-motion: no-preference` and keep it to transforms and colors.
 
 ### Don't:
 
-- **Don't** lay projects out as GitHub-style repo tiles with a language dot.
-- **Don't** set text in `#ff00cc` on the binder page; use the accent.
-- **Don't** put foil on popular or archived cards.
-- **Don't** add shadows to anything that isn't a card.
-- **Don't** put screenshots or logos in the art window; it holds the hex identicon.
+- **Don't** add radius, shadows, filled panels, cards, tiles or pills.
+- **Don't** add any hue, color gradients or glows. The row underline is drawn with an ink-only `linear-gradient` background; that's a line, and it's the only use.
+- **Don't** use bold or load another weight. No weight above 400, emphasis included.
+- **Don't** add scroll-triggered motion beyond the list end rule, or any animation library.
+- **Don't** set sentences in mono or labels in the sans.
+- **Don't** put a mono label above a heading as decoration. The project page breadcrumb is there because it links back to the index.
+- **Don't** add icons. The hexagon logo is the only graphic.
+
+## Design Rationale
+
+The direction came from looking at current Awwwards Sites of the Day, as the owner asked. Principles were taken from four of them; no layout, imagery or asset was copied. Each technique below was observed directly on the live site. FORMAT and Grids (Obys) were also considered, but both returned 403 to a headless browser, so they aren't cited.
+
+1. **Signal-A Studio**, [signal-a.studio](https://signal-a.studio) ([Awwwards SOTD, Oct 18, 2026](https://www.awwwards.com/sites/signal-a-studio); tagged Minimal, Typography, Clean; palette #000 and #fff).
+   Borrowed: navigation as equal grid columns with each link on its own 1px rule; small uppercase mono for every label and metadata value; index rows separated by a single rule, with the name in the left column and label and value pairs in later columns; very large vertical gaps between blocks.
+   Here: the header gives each of its four links an equal column with a strong hairline under it. The `.meta` label voice covers every label and value. The index rows put the name in columns 1 to 4 and the other fields in later columns under one row of column labels, and the facts list on a project page uses label and value pairs. Gaps between blocks run to 11rem to 13rem at desktop width.
+2. **SANTAL**, [santalarch.com](https://santalarch.com) ([Awwwards SOTD, Nov 15, 2026](https://www.awwwards.com/sites/santal); palette #F0F0F0 and #0F0F0F).
+   Borrowed: hairline rules thinner than 1px that expose the column grid; the main statement set light at a modest size in the right half while a tiny two-line caption sits far left; light and dark treated as equals.
+   Here: rules drop to 0.5px on 2x screens, and the rows, column labels and footer all sit on the same 12 columns so the rules show the grid. The intro's lead statement sits in columns 7 to 12 at weight 300, with a two-line mono caption in columns 1 to 3. SANTAL has an invert toggle; this site follows the system setting instead, with every neutral defined for both schemes.
+3. **Creative Reference Library**, [crl-2026.webflow.io](https://crl-2026.webflow.io) ([Awwwards SOTD, Nov 10, 2026](https://www.awwwards.com/sites/creative-reference-library); palette #000 and #FFF).
+   Borrowed: counts in parentheses beside a heading or category (as in "(2) Books" and a superscript count on "Library"); underline as the only active or hover state in navigation.
+   Here: each section heading carries its project count as a mono superscript in parentheses. In the header, the rule under each link stands in for a text underline.
+4. **Guillaume Colombel portfolio**, [guillaumecolombel.fr](https://guillaumecolombel.fr) ([Awwwards SOTD, Oct 28, 2026](https://www.awwwards.com/sites/g-colombel-portfolio-2026); two colors).
+   Borrowed: chrome reduced to small corner labels; a single 1px line as the only drawn element; a near-black ground in dark.
+   Here: the header and footer are small mono labels at the page's edges. Hairlines are the only thing drawn apart from the logo. The dark ground is pure black (#000000).

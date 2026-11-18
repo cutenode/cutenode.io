@@ -58,6 +58,53 @@ describe('parseProject', () => {
 		expect(() => parseProject('/x/typo.md', DOCOV.replace('stars: 1', 'stras: 1'))).toThrow(/stras/);
 	});
 
+	it('reads the landing page fields', () => {
+		const project = parseProject(
+			'/a/docov.md',
+			DOCOV.replace(
+				'stars: 1',
+				[
+					'stars: 1',
+					'homepage: true',
+					'install:',
+					'  - label: npm',
+					'    command: npm install --save-dev @docov/cli',
+					'usage:',
+					'  language: sh',
+					'  code: npx docov',
+					'features:',
+					'  - Lists every undocumented declaration',
+					'options:',
+					'  - name: --threshold',
+					'    description: Fail under this percentage.',
+					'faq:',
+					'  - question: Does it need a build?',
+					'    answer: No.',
+					'compatibility:',
+					'  node: ">=20"'
+				].join('\n')
+			)
+		);
+
+		expect(project.homepage).toBe(true);
+		expect(project.install).toEqual([{ label: 'npm', command: 'npm install --save-dev @docov/cli' }]);
+		expect(project.compatibility).toEqual({ node: '>=20' });
+	});
+
+	it("keeps a project with its own site off the homepage tier, and that tier's sections with it", () => {
+		const withSite = DOCOV.replace('stars: 1', 'stars: 1\nsite: https://example.com\nhomepage: true');
+		const optionsOnly = DOCOV.replace('stars: 1', 'stars: 1\noptions:\n  - name: a\n    description: b');
+
+		expect(() => parseProject('/a/site.md', withSite)).toThrow(/sends people there/);
+		expect(() => parseProject('/a/options.md', optionsOnly)).toThrow(/options is for homepage projects/);
+	});
+
+	it('wants compatibility to name something', () => {
+		const empty = DOCOV.replace('stars: 1', 'stars: 1\nhomepage: true\ncompatibility: {}');
+
+		expect(() => parseProject('/a/empty.md', empty)).toThrow(/node, platforms or both/);
+	});
+
 	it('reads a set of files', () => {
 		expect(readProjects({ '/a/docov.md': DOCOV }).map(({ slug }) => slug)).toEqual(['docov']);
 	});

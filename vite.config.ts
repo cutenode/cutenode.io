@@ -5,17 +5,31 @@ import { playwright } from '@vitest/browser-playwright';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 
-const browser = () => ({
+const browser = (reducedMotion?: 'reduce') => ({
 	enabled: true,
 	headless: true,
-	provider: playwright(),
+	provider: playwright({ contextOptions: { reducedMotion } }),
 	instances: [{ browser: 'chromium' as const }]
+});
+
+const STORYBOOK = fileURLToPath(new URL('.storybook', import.meta.url));
+
+/**
+ * Every story as a test, with axe failing on any violation (.storybook/preview.ts). The same stories run four ways:
+ * light at desktop width, dark, at a phone's width, and with reduced motion, so each state is checked in each.
+ */
+const storybookProject = (name: string, initialGlobals: Record<string, unknown> = {}, reducedMotion?: 'reduce') => ({
+	extends: true as const,
+	plugins: [storybookTest({ configDir: STORYBOOK, initialGlobals })],
+	test: { name, browser: browser(reducedMotion) }
 });
 
 export default defineConfig({
 	// When the site was built, for the footer's "as of". A constant rather than load data, because 404.html renders in
 	// the browser and can't fetch a page's server data.
 	define: { __BUILT_AT__: JSON.stringify(new Date().toISOString()) },
+	// Fonts stay files: Vite inlines small assets as data: URLs, which the CSP's font-src 'self' (rightly) blocks.
+	build: { assetsInlineLimit: (file) => (/\.woff2?$/.test(file) ? false : undefined) },
 	plugins: [
 		sveltekit({
 			compilerOptions: {
@@ -42,10 +56,17 @@ export default defineConfig({
 		expect: { requireAssertions: true },
 		coverage: {
 			provider: 'v8',
-			include: ['src/**/*.{ts,svelte}'],
-			// The root layout's server file only sets page options; the build itself exercises them.
-			exclude: ['src/**/*.{test,spec,stories}.*', 'src/app.d.ts', 'src/routes/+layout.server.ts'],
-			thresholds: { lines: 99, functions: 99, branches: 83, statements: 99 }
+			include: ['src/**/*.{ts,svelte}', 'scripts/**/*.ts'],
+			// The root layout's server file only sets page options, which the build exercises, and story-coverage.ts only
+			// prints what its tested library returns.
+			exclude: [
+				'src/**/*.{test,spec,stories}.*',
+				'src/app.d.ts',
+				'src/routes/+layout.server.ts',
+				'scripts/**/*.test.ts',
+				'scripts/story-coverage.ts'
+			],
+			thresholds: { lines: 99, functions: 99, branches: 85, statements: 99 }
 		},
 		projects: [
 			{
@@ -64,15 +85,14 @@ export default defineConfig({
 					environment: 'node',
 					// Tests use the content files' own numbers and never call GitHub.
 					env: { GITHUB_TOKEN: '' },
-					include: ['src/**/*.{test,spec}.ts'],
+					include: ['src/**/*.{test,spec}.ts', 'scripts/**/*.test.ts'],
 					exclude: ['src/**/*.svelte.{test,spec}.ts']
 				}
 			},
-			{
-				extends: true,
-				plugins: [storybookTest({ configDir: fileURLToPath(new URL('.storybook', import.meta.url)) })],
-				test: { name: 'storybook', browser: browser() }
-			}
+			storybookProject('storybook'),
+			storybookProject('storybook-dark', { scheme: 'dark' }),
+			storybookProject('storybook-phone', { viewport: { value: 'mobile1', isRotated: false } }),
+			storybookProject('storybook-reduced-motion', {}, 'reduce')
 		]
 	}
 });

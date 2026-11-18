@@ -1,6 +1,6 @@
 # Product
 
-Written from the build brief while Tierney was away. Lines marked (inferred) weren't confirmed in an interview.
+Written from the build brief while Tierney was away, then updated with their feedback on the first design. Lines marked (inferred) weren't confirmed in an interview.
 
 ## Platform
 
@@ -16,11 +16,11 @@ Developers who land on cutenode from a GitHub profile, an npm or crates.io page,
 
 ## Product Purpose
 
-The home page for cutenode, Tierney's GitHub org of "cute lil' node projects". It shows what cutenode makes, with the work that's active now first, then the projects people starred most, and gives each project a page with its links and a short write-up.
+The home page for cutenode, Tierney's GitHub org of "cute lil' node projects". It shows what cutenode makes, with the work that's active now first, then tangled, then the projects people starred most. Each project gets a landing page (Tierney: "my additional goal is for each of the projects to have a landing page on the cutenode site, with some being able to really rely on cutenode.io as their homepage"): projects with no site of their own (`homepage: true`) get a full homepage there, and projects with a site get a shorter page that sends people to it.
 
 ## Positioning
 
-A small org with a long tail: a handful of projects with real use (2,000+ stars on 1x.engineer, crates on crates.io, Actions on the Marketplace) and plenty of small experiments. The site is a shelf for those, kept honest by star counts and push dates pulled from GitHub at build time.
+A small org with a long tail: a handful of projects with real use (2,000+ stars on 1x.engineer, crates on crates.io, Actions on the Marketplace) and plenty of small experiments. The site is an index of those, kept honest by star counts and push dates pulled from GitHub at build time.
 
 ## Capabilities and Constraints
 
@@ -32,8 +32,13 @@ A small org with a long tail: a handful of projects with real use (2,000+ stars 
 ## Brand Commitments
 
 - Name: cutenode, lowercase. Tagline on GitHub: "cute lil' node projects".
-- Logo: a magenta outlined hexagon (https://github.com/cutenode/branding). The hexagon nods to Node.js's mark.
+- Logo: an outlined hexagon (https://github.com/cutenode/branding, where it's magenta). The hexagon nods to Node.js's mark. On this site it's drawn in ink, black or white.
 - Voice: casual, direct, short, often lowercase. No emoji in copy (the branding repo has none). No em dashes.
+- Feel, in Tierney's words: "go look at awwwards and let's implement it in a hyper-minimal way with a lot of whitespace and thin lines". Then: "I want the cutenode site to be black and white and not bold". So: black and white with greys only for hierarchy, no accent colour, no weight above regular, hairline rules, a strict grid, light type at large sizes, quiet motion. Two earlier directions were rejected: a trading-card binder ("I hate this TCG style") and a flashy launch page with glowing gradients.
+
+## Accessibility & Motion
+
+Motion is quiet and costs nothing: CSS and scroll timelines only, no animation library, no layout shift, and every movement switched off under prefers-reduced-motion.
 
 ## Evidence on Hand
 
@@ -50,4 +55,4 @@ A small org with a long tail: a handful of projects with real use (2,000+ stars 
 
 ## Accessibility & Inclusion
 
-WCAG 2.2 AA. Works at phone width, in light and dark, by keyboard and screen reader. Lighthouse accessibility and best practices at 100.
+WCAG 2.2 AA. Works at phone width, in light and dark, by keyboard and screen reader. Lighthouse accessibility and best practices at 100. Every component and page has Storybook stories, each tested with axe in light, dark, at phone width and with reduced motion.

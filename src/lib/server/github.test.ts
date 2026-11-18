@@ -42,6 +42,29 @@ describe('fetchRepoStats', () => {
 		});
 	});
 
+	it('keeps the latest release, in the same request, when a repo has one', async () => {
+		const release = { tagName: 'v1.2.0', publishedAt: '2026-11-01T09:00:00Z', url: 'https://example.com/v1.2.0' };
+		const github = fakeGithub(() =>
+			json({
+				data: {
+					r0: { stargazerCount: 4, pushedAt: '2026-11-02T00:00:00Z', latestRelease: release },
+					r1: { stargazerCount: 1, pushedAt: '2026-11-02T00:00:00Z', latestRelease: null }
+				}
+			})
+		);
+
+		const stats = await fetchRepoStats(['cutenode/released', 'cutenode/unreleased'], 'token', github.fetcher);
+
+		expect(github.calls).toHaveLength(1);
+		expect(github.calls[0].body).toContain('latestRelease { tagName publishedAt url }');
+		expect(stats.get('cutenode/released')?.release).toEqual({
+			version: 'v1.2.0',
+			date: '2026-11-01',
+			url: 'https://example.com/v1.2.0'
+		});
+		expect(stats.get('cutenode/unreleased')).not.toHaveProperty('release');
+	});
+
 	it('skips repos GitHub returns null for and keeps the rest', async () => {
 		const github = fakeGithub(() =>
 			json({ data: { r0: null, r1: { stargazerCount: 1, pushedAt: '2026-01-01T00:00:00Z' } }, errors: [{}] })

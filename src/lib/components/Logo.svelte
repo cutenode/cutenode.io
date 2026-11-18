@@ -12,7 +12,7 @@
 
 	polygon {
 		fill: none;
-		stroke: var(--brand);
+		stroke: var(--ink);
 		stroke-width: 118;
 		stroke-linejoin: miter;
 	}

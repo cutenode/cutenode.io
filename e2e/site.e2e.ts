@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 const noAxeViolations = async (page: Page) => {
 	const { violations } = await new AxeBuilder({ page })
-		.withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+		.withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'])
 		.analyze();
 
 	expect(violations.map(({ id, nodes }) => `${id}: ${nodes.map((node) => node.target).join(', ')}`)).toEqual([]);
@@ -21,7 +21,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
 			await page.goto('/');
 
 			await expect(page.getByRole('heading', { level: 1 })).toHaveText("cute lil' node projects");
-			await expect(page.getByRole('heading', { level: 2 }).first()).toHaveText('active');
+			await expect(page.getByRole('heading', { level: 2 })).toHaveText([/^active/, /^tangled/, /^popular/]);
 			await expect(page.getByRole('link', { name: 'docov', exact: true })).toBeVisible();
 			await noSidewaysScroll(page);
 			await noAxeViolations(page);
@@ -42,7 +42,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
 	});
 }
 
-test('every card on the index opens its project page', async ({ page, request }) => {
+test('every project on the index opens its page', async ({ page, request }) => {
 	await page.goto('/');
 
 	const hrefs = await page
@@ -62,21 +62,22 @@ test('every card on the index opens its project page', async ({ page, request })
 	);
 });
 
-test('the keyboard reaches the skip link, then the projects', async ({ page, isMobile }) => {
+test('the keyboard reaches the skip link, then skips past the header', async ({ page, isMobile }) => {
 	test.skip(isMobile, 'no keyboard on the phone project');
 	await page.goto('/');
 
 	await page.keyboard.press('Tab');
-	await expect(page.getByRole('link', { name: 'skip to projects' })).toBeFocused();
+	await expect(page.getByRole('link', { name: 'skip to content' })).toBeFocused();
 	await page.keyboard.press('Enter');
 	await page.keyboard.press('Tab');
-	await expect(page.getByRole('link', { name: 'github', exact: true })).toBeFocused();
+	// The first link in the page's own content, not the header's link of the same name.
+	await expect(page.getByRole('main').getByRole('link', { name: 'github', exact: true })).toBeFocused();
 });
 
 test('a missing page says so and links home', async ({ page }) => {
 	await page.goto('/not-a-project/');
 
-	await expect(page.getByRole('heading', { level: 1 })).toHaveText("that card's not in the binder");
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('nothing lives here');
 	await expect(page.getByRole('link', { name: 'see all projects' })).toBeVisible();
 });
 
@@ -93,5 +94,8 @@ test('pages carry canonical and OpenGraph tags for cutenode.io', async ({ page }
 
 	await expect(page.locator('link[rel=canonical]')).toHaveAttribute('href', 'https://cutenode.io/docov/');
 	await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', 'https://cutenode.io/docov/');
-	await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', 'https://cutenode.io/og.png');
+	await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+		'content',
+		'https://cutenode.io/docov/og.png'
+	);
 });

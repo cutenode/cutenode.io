@@ -17,7 +17,7 @@ concurrency:
 # files and never depend on GitHub's API.
 jobs:
   checks:
-    name: Format, lint, types, tests with coverage
+    name: Format, lint, types, tests with coverage, Storybook
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -33,9 +33,11 @@ jobs:
       - run: pnpm format:check
       - run: pnpm lint
       - run: pnpm typecheck
-      # Component and story tests run in Chromium.
+      # Component and story tests run in Chromium: every story four times (light, dark, phone, reduced motion), each
+      # with axe. pnpm lint above also fails on a component or page without a story.
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test:coverage
+      - run: pnpm build-storybook
 
   browser:
     name: E2E and Lighthouse on the Caddy server
