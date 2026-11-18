@@ -1,0 +1,97 @@
+:root {
+	color-scheme: light dark;
+
+	/* The binder: its page and the clear sleeve pockets the cards sit in. These follow the theme. */
+	--page: light-dark(oklch(0.95 0.012 330), oklch(0.15 0.012 330));
+	--pocket: light-dark(oklch(0.985 0.006 330 / 0.75), oklch(0.21 0.014 330 / 0.85));
+	--pocket-shine: light-dark(oklch(1 0 0 / 0.9), oklch(1 0 0 / 0.08));
+	--weld: light-dark(oklch(0.86 0.016 330), oklch(0.3 0.016 330));
+	--ink: light-dark(oklch(0.22 0.03 330), oklch(0.95 0.01 330));
+	--ink-soft: light-dark(oklch(0.43 0.035 330), oklch(0.79 0.025 330));
+	--accent: light-dark(oklch(0.5 0.24 340), oklch(0.78 0.18 340));
+
+	/* The cards are printed, so they look the same in both themes. */
+	--brand: #ff00cc;
+	--card-face: oklch(0.985 0.006 330);
+	--card-ink: oklch(0.2 0.03 330);
+	--card-ink-soft: oklch(0.42 0.035 330);
+	--card-art: oklch(0.21 0.04 330);
+	--set-active: var(--brand);
+	--set-popular: oklch(0.82 0.15 82);
+	--set-archived: oklch(0.76 0.03 260);
+
+	--display: 'Anybody Variable', 'Arial Narrow', sans-serif;
+	--body: 'Atkinson Hyperlegible Next Variable', system-ui, sans-serif;
+	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+	--gutter: clamp(1rem, 4vw, 3rem);
+
+	background: var(--page);
+	color: var(--ink);
+	font-family: var(--body);
+	font-size: 1.0625rem;
+	line-height: 1.55;
+	accent-color: var(--accent);
+	-webkit-text-size-adjust: 100%;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	min-height: 100dvh;
+}
+
+::selection {
+	background: var(--brand);
+	color: oklch(0.15 0.03 330);
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--display);
+	line-height: 1.05;
+	letter-spacing: -0.02em;
+	text-wrap: balance;
+	margin: 0;
+}
+
+p {
+	text-wrap: pretty;
+}
+
+a {
+	color: var(--accent);
+	text-underline-offset: 0.2em;
+	text-decoration-thickness: 0.08em;
+}
+
+a:hover {
+	text-decoration-thickness: 0.14em;
+}
+
+:focus-visible {
+	outline: 3px solid var(--accent);
+	outline-offset: 3px;
+	border-radius: 2px;
+}
+
+code,
+pre {
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	font-size: 0.9em;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}

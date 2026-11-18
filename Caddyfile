@@ -1,0 +1,57 @@
+# How Railway serves build/. Railpack picks this file up in place of its default static-site config
+# (RAILPACK_SPA_OUTPUT_DIR in .railway/railway.ts turns that mode on) and runs it with Caddy.
+{
+	admin off
+	persist_config off
+	auto_https off
+
+	log {
+		format json
+	}
+
+	servers {
+		# Railway's proxy, so client addresses in the logs are the visitors'.
+		trusted_proxies static private_ranges 100.0.0.0/8
+	}
+}
+
+:{$PORT:80} {
+	log {
+		format json
+	}
+
+	respond /health 200
+
+	# Railway sends both hostnames here; www goes to the apex.
+	@www host www.cutenode.io
+	redir @www https://cutenode.io{uri} permanent
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		Strict-Transport-Security "max-age=31536000"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		# The page's own CSP is a meta tag with script hashes; a meta tag can't set frame-ancestors.
+		Content-Security-Policy "frame-ancestors 'none'"
+		-Server
+	}
+
+	# Hashed file names, so they never change under the same URL.
+	@immutable path /_app/immutable/*
+	header @immutable Cache-Control "public, max-age=31536000, immutable"
+
+	# /app/build on Railway; SITE_ROOT points it elsewhere for a local run.
+	root * {$SITE_ROOT:/app/build}
+	encode zstd gzip
+
+	# Every page is <slug>/index.html, so the file server's own index handling serves it and redirects
+	# /docov to /docov/. No fallback to the index page: a missing path is a real 404.
+	file_server {
+		hide .git .env*
+	}
+
+	handle_errors 404 {
+		rewrite * /404.html
+		file_server
+	}
+}
