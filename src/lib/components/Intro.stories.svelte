@@ -6,14 +6,12 @@
 	const { Story } = defineMeta({
 		title: 'Components/Intro',
 		component: Intro,
-		args: { total: 30 },
-		parameters: { layout: 'fullscreen' }
+		args: { total: 30 }
 	});
 </script>
 
-<!-- Inside the page's margins, as on the index. -->
 {#snippet framed(args: { total: number })}
-	<div style="padding-inline: var(--margin)"><Intro {...args} /></div>
+	<Intro {...args} />
 {/snippet}
 
 <Story

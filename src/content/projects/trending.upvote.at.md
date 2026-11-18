@@ -1,6 +1,6 @@
 ---
 name: trending.upvote.at
-description: A Bluesky bot that posts links when they start collecting upvotes fast.
+description: a Bluesky bot that posts trending links from upvote.at
 status: active
 forge: tangled
 repo: https://tangled.org/upvote.at/trending.upvote.at
@@ -13,4 +13,4 @@ features:
 created: 2026-08-03
 ---
 
-When a link on [upvote.at](https://upvote.at) starts collecting upvotes fast, [@trending.upvote.at](https://bsky.app/profile/trending.upvote.at) posts it. Follow it if you want what's taking off on upvote.at in your Bluesky timeline.
+When a link on [upvote.at](https://upvote.at) starts collecting upvotes fast, [@trending.upvote.at](https://bsky.app/profile/trending.upvote.at) posts it. Follow it to get upvote.at's trending links in your Bluesky timeline.

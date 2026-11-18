@@ -24,20 +24,20 @@ describe('fetchRepoStats', () => {
 		const github = fakeGithub(() =>
 			json({
 				data: {
-					r0: { stargazerCount: 2112, pushedAt: '2024-04-09T12:00:00Z' },
+					r0: { stargazerCount: 15, pushedAt: '2026-11-10T12:00:00Z' },
 					r1: { stargazerCount: 3, pushedAt: '2026-11-17T01:02:03Z' }
 				}
 			})
 		);
 
-		const stats = await fetchRepoStats(['cutenode/1x.engineer', 'cutenode/docov'], 'token', github.fetcher);
+		const stats = await fetchRepoStats(['cutenode/nodevu', 'cutenode/docov'], 'token', github.fetcher);
 
 		expect(github.calls).toHaveLength(1);
 		expect(github.calls[0].url).toBe('https://api.github.com/graphql');
 		expect(github.calls[0].authorization).toBe('bearer token');
 		expect(github.calls[0].body).toContain('repository(owner: \\"cutenode\\", name: \\"docov\\")');
 		expect(Object.fromEntries(stats)).toEqual({
-			'cutenode/1x.engineer': { stars: 2112, pushed: '2024-04-09' },
+			'cutenode/nodevu': { stars: 15, pushed: '2026-11-10' },
 			'cutenode/docov': { stars: 3, pushed: '2026-11-17' }
 		});
 	});

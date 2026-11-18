@@ -166,12 +166,6 @@ importers:
 
   .:
     dependencies:
-      '@fontsource/jetbrains-mono':
-        specifier: ^5.3.0
-        version: 5.3.0
-      '@fontsource/mona-sans':
-        specifier: ^5.3.0
-        version: 5.3.0
       evlog:
         specifier: ^2.35.1
         version: 2.35.1(react@19.3.1)(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2))
@@ -188,6 +182,9 @@ importers:
       '@axe-core/playwright':
         specifier: ^4.14.0
         version: 4.14.0(playwright-core@1.65.1)
+      '@fontsource/mona-sans':
+        specifier: ^5.3.0
+        version: 5.3.0
       '@lhci/cli':
         specifier: ^0.16.1
         version: 0.16.1(@types/node@24.19.2)(supports-color@7.2.0)
@@ -495,9 +492,6 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
-
-  '@fontsource/jetbrains-mono@5.3.0':
-    resolution: {integrity: sha512-fqDfB5I9f1p1TV486aUgB9t8zP84P0O1FtQR5Ol9vjwPy+S+EIGlVYm1cvj2W5shcZMTg2nZFdVMoH5wFu8a1A==}
 
   '@fontsource/mona-sans@5.3.0':
     resolution: {integrity: sha512-+K4yLnbbtNfYuR1Znpq9kWEJUYD1W0yQ5DhWde93lC3O8VHXtydoM0bHZBvO6DofIYEXgZlZU14A9yFClisL+g==}
@@ -3755,8 +3749,6 @@ snapshots:
 
   '@esbuild/win32-x64@0.28.2':
     optional: true
-
-  '@fontsource/jetbrains-mono@5.3.0': {}
 
   '@fontsource/mona-sans@5.3.0': {}
 

@@ -7,7 +7,7 @@
 	import SiteHeader from './SiteHeader.svelte';
 
 	// The pieces every page shares: the header, the footer, the logo, and the head tags.
-	const { Story } = defineMeta({ title: 'Components/Site chrome', parameters: { layout: 'fullscreen' } });
+	const { Story } = defineMeta({ title: 'Components/Site chrome' });
 </script>
 
 <Story
@@ -28,7 +28,7 @@
 	name="Footer"
 	asChild
 	play={async ({ canvasElement }) => {
-		await expect(within(canvasElement).getByText(/github, nov 17, 2026/)).toBeVisible();
+		await expect(within(canvasElement).getByText(/from github, as of nov 17, 2026/)).toBeVisible();
 	}}
 >
 	<SiteFooter builtAt="2026-11-17T12:00:00Z" />

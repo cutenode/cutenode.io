@@ -15,13 +15,11 @@
 	play={async ({ canvasElement }) => {
 		const heading = within(canvasElement);
 
-		await expect(heading.getByRole('heading', { level: 2, name: 'active, 14 projects' })).toHaveAttribute('id', 'active-heading');
-		await expect(heading.getByText('shipping now, newest first')).toBeVisible();
+		await expect(heading.getByRole('heading', { level: 2, name: 'active (14)' })).toHaveAttribute('id', 'active-heading');
+		await expect(heading.getByText('shipping now, newest first.')).toBeVisible();
 	}}
 />
 
 <Story name="Tangled" args={{ section: 'tangled', total: 5 }} />
-
-<Story name="Popular" args={{ section: 'popular', total: 11 }} />
 
 <Story name="Archived" args={{ section: 'archived', total: 1 }} />

@@ -1,6 +1,6 @@
 ---
 name: nodevu
-description: Node.js version information, collected and merged into one place.
+description: a utility for Node.js version information
 status: active
 forge: github
 repo: https://github.com/cutenode/nodevu
@@ -30,4 +30,6 @@ stars: 15
 pushed: 2026-11-17
 ---
 
-nodevu collects, merges, and reasons about Node.js versions so you don't have to. It's a set of modules for tools that need to know which Node.js versions exist and where each one stands, all supporting Node.js 24 and later.
+nodevu is a Node.js version utility. It collects, merges and reasons about Node.js versions, and hands back the result in a shape that's easy to get at and (hopefully!) useful.
+
+It's a set of modules, each supporting Node.js 24 and later, with docs at [nodevu.dev](https://nodevu.dev).

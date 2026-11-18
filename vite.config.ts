@@ -5,31 +5,30 @@ import { playwright } from '@vitest/browser-playwright';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 
-const browser = (reducedMotion?: 'reduce') => ({
+// One per project: Vitest writes each project's name into its browser config.
+const browser = () => ({
 	enabled: true,
 	headless: true,
-	provider: playwright({ contextOptions: { reducedMotion } }),
+	provider: playwright(),
 	instances: [{ browser: 'chromium' as const }]
 });
 
 const STORYBOOK = fileURLToPath(new URL('.storybook', import.meta.url));
 
 /**
- * Every story as a test, with axe failing on any violation (.storybook/preview.ts). The same stories run four ways:
- * light at desktop width, dark, at a phone's width, and with reduced motion, so each state is checked in each.
+ * Every story as a test, with axe failing on any violation (.storybook/preview.ts). The same stories run three ways:
+ * light at desktop width, dark, and at a phone's width, so each state is checked in each.
  */
-const storybookProject = (name: string, initialGlobals: Record<string, unknown> = {}, reducedMotion?: 'reduce') => ({
+const storybookProject = (name: string, initialGlobals: Record<string, unknown> = {}) => ({
 	extends: true as const,
 	plugins: [storybookTest({ configDir: STORYBOOK, initialGlobals })],
-	test: { name, browser: browser(reducedMotion) }
+	test: { name, browser: browser() }
 });
 
 export default defineConfig({
 	// When the site was built, for the footer's "as of". A constant rather than load data, because 404.html renders in
 	// the browser and can't fetch a page's server data.
 	define: { __BUILT_AT__: JSON.stringify(new Date().toISOString()) },
-	// Fonts stay files: Vite inlines small assets as data: URLs, which the CSP's font-src 'self' (rightly) blocks.
-	build: { assetsInlineLimit: (file) => (/\.woff2?$/.test(file) ? false : undefined) },
 	plugins: [
 		sveltekit({
 			compilerOptions: {
@@ -91,8 +90,7 @@ export default defineConfig({
 			},
 			storybookProject('storybook'),
 			storybookProject('storybook-dark', { scheme: 'dark' }),
-			storybookProject('storybook-phone', { viewport: { value: 'mobile1', isRotated: false } }),
-			storybookProject('storybook-reduced-motion', {}, 'reduce')
+			storybookProject('storybook-phone', { viewport: { value: 'mobile1', isRotated: false } })
 		]
 	}
 });

@@ -28,8 +28,6 @@
 		"serve": "sh scripts/serve.sh"
 	},
 	"dependencies": {
-		"@fontsource/jetbrains-mono": "^5.3.0",
-		"@fontsource/mona-sans": "^5.3.0",
 		"evlog": "^2.35.1",
 		"gray-matter": "^4.0.3",
 		"marked": "^18.2.1",
@@ -37,6 +35,7 @@
 	},
 	"devDependencies": {
 		"@axe-core/playwright": "^4.14.0",
+		"@fontsource/mona-sans": "^5.3.0",
 		"@lhci/cli": "^0.16.1",
 		"@playwright/test": "^1.60.0",
 		"@resvg/resvg-js": "^2.6.2",

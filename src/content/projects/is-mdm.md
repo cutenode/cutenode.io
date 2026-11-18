@@ -1,6 +1,6 @@
 ---
 name: is-mdm
-description: Checks whether the current device is managed by MDM. Zero dependencies.
+description: a quick, zero dependency check for whether a device is managed by MDM
 status: active
 forge: github
 repo: https://github.com/cutenode/is-mdm
@@ -29,6 +29,6 @@ stars: 1
 pushed: 2026-08-26
 ---
 
-A tiny JavaScript take on LGUG2Z's [article](https://lgug2z.com/articles/normalize-identifying-corporate-devices-in-your-software/) about detecting corporate devices. It's for Node tools that need to know whether they're running on a managed, usually corporate, device.
+is-mdm is a tiny library inspired by LGUG2Z's [article](https://lgug2z.com/articles/normalize-identifying-corporate-devices-in-your-software/) on detecting corporate devices. The article uses Rust, and I wanted the same thing in JavaScript, quickly and with zero dependencies.
 
-The article does it in Rust. is-mdm does the same thing in Node with no dependencies, and PRs for more platforms are welcome.
+It checks macOS and Windows for now. PRs for other platforms are welcome.

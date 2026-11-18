@@ -1,6 +1,6 @@
 ---
 name: tsdocrs
-description: A TSDoc parser in Rust, ported from @microsoft/tsdoc.
+description: "a TSDoc parser in Rust: @microsoft/tsdoc's tree and messages, ported"
 status: active
 forge: github
 repo: https://github.com/cutenode/tsdocrs
@@ -43,4 +43,4 @@ pushed: 2026-11-17
 
 tsdocrs parses [TSDoc](https://tsdoc.org) comments in Rust. It's a port of `@microsoft/tsdoc`'s parser, so a tool built on it reports what `eslint-plugin-tsdoc` does.
 
-It's for linters, editor extensions and doc tools that want TSDoc's behavior without running Node. The npm build gives JavaScript tools the same parser as one WebAssembly file instead of a native binary per platform.
+On npm it ships as one WebAssembly file, so a linter plugin or editor extension gets the same parser with no native binary per platform to download.

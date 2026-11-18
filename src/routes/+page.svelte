@@ -21,11 +21,5 @@
 {#each data.groups as group (group.section)}
 	<ProjectIndex {group} />
 {:else}
-	<p class="empty meta">no projects yet. add a file to src/content/projects/.</p>
+	<p class="muted">no projects yet. add a file to <code>src/content/projects/</code>.</p>
 {/each}
-
-<style>
-	.empty {
-		padding-block: 6rem;
-	}
-</style>

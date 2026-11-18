@@ -4,7 +4,7 @@ import type { Project, ProjectGroup } from './project.ts';
 export const fixture = (slug: string, fields: Partial<Project> = {}): Project => ({
 	slug,
 	name: slug,
-	description: 'JSDoc and TSDoc coverage for JavaScript and TypeScript.',
+	description: 'JSDoc and TSDoc coverage for JavaScript and TypeScript',
 	status: 'active',
 	forge: 'github',
 	repo: `https://github.com/cutenode/${slug}`,
@@ -14,13 +14,6 @@ export const fixture = (slug: string, fields: Partial<Project> = {}): Project =>
 });
 
 export const ACTIVE = fixture('docov', { stars: 3 });
-
-export const POPULAR = fixture('good-first-issue', {
-	status: 'popular',
-	description: 'A CLI for finding good first issues.',
-	stars: 839,
-	pushed: '2024-03-06'
-});
 
 export const ARCHIVED = fixture('am-i-too-old', {
 	status: 'archived',
@@ -37,11 +30,10 @@ export const TANGLED = fixture('upvote.at', {
 	created: '2026-07-30'
 });
 
-export const LONG_NAME = fixture('github-actions-ci-templates', {
-	status: 'popular',
-	description: 'Templates for GitHub Actions CI configurations.',
+export const LONG_NAME = fixture('retro-weekly-organization-retrospectives', {
+	description: 'template repo for running retrogen weekly to write retros for your org or user',
 	stars: 42,
-	pushed: '2021-02-04'
+	pushed: '2026-11-15'
 });
 
 export const NO_STARS = fixture('remain-e2e', { description: 'End-to-end fixtures for remain.', stars: 0 });
@@ -50,7 +42,7 @@ export const LONG_DESCRIPTION = fixture('trending.upvote.at', {
 	forge: 'tangled',
 	repo: 'https://tangled.org/upvote.at/trending.upvote.at',
 	description:
-		'A Bluesky bot that posts links when they start collecting upvotes fast, with an allowlist and a blocklist to keep spam out of the feed, and one post per link at most.',
+		'a Bluesky bot that posts links when they start collecting upvotes fast, with an allowlist and a blocklist to keep spam out of the feed, and one post per link at most.',
 	pushed: undefined,
 	created: '2026-08-03'
 });
@@ -65,7 +57,7 @@ export const WITH_LINKS = fixture('tsdocrs', {
 
 /** A homepage-tier page with every section filled. */
 export const HOMEPAGE = fixture('workistrator', {
-	description: 'A GitHub Action that syncs workflow templates from one repo to many.',
+	description: 'a GitHub Action to manage your workflows across many repos from one place',
 	homepage: true,
 	stars: 4,
 	html: '<p>Keep one set of workflow templates in a parent repo and let the action write them into each child.</p>',
@@ -92,7 +84,7 @@ export const HOMEPAGE = fixture('workistrator', {
 
 /** A project with its own site, whose short page sends people there. */
 export const OWN_SITE = fixture('nodevu', {
-	description: 'Node.js version information, collected and merged into one place.',
+	description: 'a utility for Node.js version information',
 	site: 'https://nodevu.dev',
 	docs: 'https://nodevu.dev',
 	package: 'https://www.npmjs.com/package/@nodevu/core',
@@ -107,10 +99,5 @@ export const ACTIVE_GROUP: ProjectGroup = {
 };
 
 export const TANGLED_GROUP: ProjectGroup = { section: 'tangled', projects: [LONG_DESCRIPTION, TANGLED] };
-
-export const POPULAR_GROUP: ProjectGroup = {
-	section: 'popular',
-	projects: [fixture('1x.engineer', { status: 'popular', stars: 2112 }), POPULAR, LONG_NAME]
-};
 
 export const ARCHIVED_GROUP: ProjectGroup = { section: 'archived', projects: [ARCHIVED] };

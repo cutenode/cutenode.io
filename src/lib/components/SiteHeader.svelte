@@ -5,15 +5,13 @@
 	const LINKS = [
 		{ label: 'active', href: '/#active' },
 		{ label: 'tangled', href: '/#tangled' },
-		{ label: 'popular', href: '/#popular' },
 		{ label: 'github', href: GITHUB_ORG }
 	];
 </script>
 
-<!-- Each link owns a column of the grid and sits on its own hairline. -->
-<header class="site-header">
+<header>
 	<nav aria-label="site">
-		<a class="home" href="/"><Logo /><span>{SITE_NAME}</span></a>
+		<a class="home" href="/"><Logo />{SITE_NAME}</a>
 		<ul>
 			{#each LINKS as link (link.href)}
 				<li><a href={link.href}>{link.label}</a></li>
@@ -24,51 +22,30 @@
 
 <style>
 	nav {
-		display: grid;
-		grid-template-columns: repeat(12, minmax(0, 1fr));
-		gap: var(--gap);
-		padding: 1.1rem var(--margin) 0;
-	}
-
-	a {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
-		gap: 0.5rem;
-		min-height: 2.75rem;
-		border-bottom: var(--hairline) solid var(--rule-strong);
-		font-family: var(--mono);
-		font-size: 0.72rem;
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
-		text-decoration: none;
+		gap: 0.25rem 1.5rem;
 	}
 
 	.home {
-		grid-column: 1 / span 3;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
 	}
 
 	ul {
-		display: grid;
-		grid-column: 5 / -1;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-		gap: var(--gap);
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0 1rem;
 		margin: 0;
 		padding: 0;
 		list-style: none;
 	}
 
-	/* Hover doubles the link's rule; a shadow, so nothing below moves. */
-	ul a:hover {
-		box-shadow: inset 0 -1px 0 var(--ink);
-	}
-
-	@media (max-width: 47.99rem) {
-		.home {
-			grid-column: 1 / -1;
-		}
-
-		ul {
-			grid-column: 1 / -1;
-		}
+	/* Links are inline text, so give them a touch target taller than the line. */
+	a {
+		display: inline-block;
+		padding-block: 0.6rem;
 	}
 </style>

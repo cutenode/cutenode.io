@@ -25,11 +25,9 @@ describe('githubRepo', () => {
 });
 
 describe('groupProjects', () => {
-	it('puts active work first, then tangled, both newest first, then popular by stars, then archived by name', () => {
+	it('puts active work first, then tangled, both newest first, then archived by name', () => {
 		const groups = groupProjects([
-			project('old-star', { status: 'popular', stars: 50 }),
 			project('zed', { status: 'archived' }),
-			project('big-star', { status: 'popular', stars: 2000 }),
 			project('tangled-old', { forge: 'tangled', created: '2026-07-30' }),
 			project('tangled-new', { forge: 'tangled', created: '2026-08-03' }),
 			project('tangled-gone', { forge: 'tangled', status: 'archived' }),
@@ -40,7 +38,6 @@ describe('groupProjects', () => {
 		expect(groups.map(({ section, projects }) => [section, projects.map(({ slug }) => slug)])).toEqual([
 			['active', ['fresh']],
 			['tangled', ['tangled-new', 'tangled-old']],
-			['popular', ['big-star', 'old-star']],
 			['archived', ['abe', 'tangled-gone', 'zed']]
 		]);
 	});
@@ -50,13 +47,13 @@ describe('groupProjects', () => {
 			project('b'),
 			project('a'),
 			project('dated', { pushed: '2020-01-01' }),
-			project('c', { status: 'popular' }),
-			project('d', { status: 'popular' })
+			project('c', { status: 'archived' }),
+			project('d', { status: 'archived' })
 		]);
 
 		expect(groups.map(({ section, projects }) => [section, projects.map(({ slug }) => slug)])).toEqual([
 			['active', ['dated', 'a', 'b']],
-			['popular', ['c', 'd']]
+			['archived', ['c', 'd']]
 		]);
 	});
 

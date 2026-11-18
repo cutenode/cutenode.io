@@ -1,6 +1,6 @@
 # cutenode.io
 
-the website for [cutenode](https://github.com/cutenode): cute lil' node projects. the index lists them all (active work first, then tangled, then the ones people starred), and every project has its own landing page. it's a static SvelteKit site, prerendered at build, with no runtime fetches.
+the website for [cutenode](https://github.com/cutenode): cute lil' node projects. the index lists them all (active work first, then tangled), and every project has its own landing page. it's a static SvelteKit site, prerendered at build, with no runtime fetches.
 
 ## adding a project
 
@@ -10,7 +10,7 @@ add one file to `src/content/projects/<slug>.md`. the slug is the URL (`/docov/`
 ---
 name: docov
 description: JSDoc and TSDoc coverage for JavaScript and TypeScript. # the tagline
-status: active # active, popular or archived
+status: active # active or archived
 forge: github # github or tangled
 repo: https://github.com/cutenode/docov
 site: https://example.com # its own website; the page then sends people there

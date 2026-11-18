@@ -1,12 +1,12 @@
 <script module lang="ts">
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { expect, within } from 'storybook/test';
-	import { ACTIVE_GROUP, ARCHIVED_GROUP, POPULAR_GROUP, TANGLED_GROUP } from '#lib/fixtures.ts';
+	import { ACTIVE_GROUP, ARCHIVED_GROUP, TANGLED_GROUP } from '#lib/fixtures.ts';
 	import ErrorPage from './+error.svelte';
 	import Layout from './+layout.svelte';
 	import IndexPage from './+page.svelte';
 
-	const { Story } = defineMeta({ title: 'Pages/Index and errors', parameters: { layout: 'fullscreen' } });
+	const { Story } = defineMeta({ title: 'Pages/Index and errors' });
 </script>
 
 <Story
@@ -19,18 +19,13 @@
 		await expect(page.getAllByRole('heading', { level: 2 }).map((heading) => heading.id)).toEqual([
 			'active-heading',
 			'tangled-heading',
-			'popular-heading',
 			'archived-heading'
 		]);
 		await expect(page.getByRole('link', { name: 'skip to content' })).toHaveAttribute('href', '#main');
 	}}
 >
 	<Layout params={{}} data={{}}>
-		<IndexPage
-			data={{ groups: [ACTIVE_GROUP, TANGLED_GROUP, POPULAR_GROUP, ARCHIVED_GROUP] }}
-			params={{}}
-			form={undefined}
-		/>
+		<IndexPage data={{ groups: [ACTIVE_GROUP, TANGLED_GROUP, ARCHIVED_GROUP] }} params={{}} form={undefined} />
 	</Layout>
 </Story>
 
@@ -38,7 +33,7 @@
 	name="Index, active only"
 	asChild
 	play={async ({ canvasElement }) => {
-		await expect(within(canvasElement).queryByRole('heading', { level: 2, name: 'popular' })).toBeNull();
+		await expect(within(canvasElement).queryByRole('heading', { level: 2, name: /tangled/ })).toBeNull();
 	}}
 >
 	<IndexPage data={{ groups: [ACTIVE_GROUP] }} params={{}} form={undefined} />

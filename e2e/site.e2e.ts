@@ -21,7 +21,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
 			await page.goto('/');
 
 			await expect(page.getByRole('heading', { level: 1 })).toHaveText("cute lil' node projects");
-			await expect(page.getByRole('heading', { level: 2 })).toHaveText([/^active/, /^tangled/, /^popular/]);
+			await expect(page.getByRole('heading', { level: 2 })).toHaveText([/^active/, /^tangled/]);
 			await expect(page.getByRole('link', { name: 'docov', exact: true })).toBeVisible();
 			await noSidewaysScroll(page);
 			await noAxeViolations(page);
@@ -46,10 +46,10 @@ test('every project on the index opens its page', async ({ page, request }) => {
 	await page.goto('/');
 
 	const hrefs = await page
-		.locator('main li h3 a')
+		.locator('main section li > a')
 		.evaluateAll((links) => links.map((link) => link.getAttribute('href')));
 
-	expect(hrefs.length).toBeGreaterThan(20);
+	expect(hrefs.length).toBeGreaterThan(10);
 	const statuses = await Promise.all(hrefs.map(async (href) => [href, (await request.get(href ?? '')).status()]));
 
 	expect(statuses.filter(([, status]) => status !== 200)).toEqual([]);

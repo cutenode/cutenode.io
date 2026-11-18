@@ -1,6 +1,6 @@
 ---
 name: workistrator
-description: A GitHub Action that syncs workflow templates from one repo to many.
+description: a GitHub Action to manage your workflows across many repos from one place
 status: active
 forge: github
 repo: https://github.com/cutenode/workistrator
@@ -49,6 +49,6 @@ stars: 0
 pushed: 2026-09-25
 ---
 
-workistrator keeps GitHub workflows in sync across repositories from one place. Put template workflows in a folder of a parent repo, list the child repos, and it writes them into each child. It's for anyone maintaining the same CI across a pile of repos.
+workistrator is a GitHub Action for managing your workflows across many repos from one place. Put template workflows in a folder of a parent repo and list the child repos, and it creates or updates them in each child.
 
-The default `GITHUB_TOKEN` can't write to other repos, so it needs a fine-grained token or App token with write access to contents and workflows on the children. Set `dry-run` to see what would change before anything is committed.
+The default `GITHUB_TOKEN` can't write to other repos, so it needs a fine-grained token or App token that can write contents and workflows in every child. Set `dry-run` to see what would change before anything's committed.

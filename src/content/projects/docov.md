@@ -1,6 +1,6 @@
 ---
 name: docov
-description: JSDoc and TSDoc coverage for JavaScript and TypeScript.
+description: JSDoc and TSDoc coverage for JavaScript and TypeScript
 status: active
 forge: github
 repo: https://github.com/cutenode/docov
@@ -64,6 +64,6 @@ stars: 0
 pushed: 2026-11-17
 ---
 
-docov measures how much of a JavaScript or TypeScript project's API has doc comments, and lists each declaration that has none. It's for holding that number in CI the way you'd hold test coverage, and for seeing what to document next.
+docov measures how much of a JavaScript or TypeScript project's API has doc comments, and lists each declaration that has none, so you can hold that number in CI like test coverage and see what to document next.
 
-It reads JSDoc and TSDoc and parses with [oxc](https://oxc.rs), so TypeScript, JSX, ES modules and CommonJS need no build step. `docov init` writes a config with a threshold at your current coverage, so the number can't slip.
+It reads JSDoc and TSDoc and parses with [oxc](https://oxc.rs), so TypeScript, JSX, ES modules and CommonJS need no build step. `docov init` writes a config with the threshold set at your current coverage, so it can't slip from there.

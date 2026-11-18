@@ -1,6 +1,6 @@
 ---
 name: atmo.sh
-description: SSH public keys, in the Atmosphere.
+description: SSH public keys, in the Atmosphere
 status: active
 forge: tangled
 repo: https://tangled.org/atmo.sh/atmo.sh
@@ -13,4 +13,4 @@ features:
 created: 2026-08-03
 ---
 
-atmo.sh shows the SSH public keys any account publishes as `sh.tangled.publicKey` records, the public key lexicon [Tangled](https://tangled.org/tangled.org/core) defines. It's for finding someone's keys from their handle, or keeping your own up to date. Reads come from a [HappyView](https://happyview.dev/) AppView.
+atmo.sh shows the SSH public keys any account publishes as `sh.tangled.publicKey` records, the public key lexicon [Tangled](https://tangled.org/tangled.org/core) defines. Look anyone up by handle or DID, or sign in to manage your own. Reads come from a [HappyView](https://happyview.dev/) AppView.

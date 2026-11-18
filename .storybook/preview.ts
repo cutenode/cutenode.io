@@ -1,7 +1,4 @@
 import type { Preview } from '@storybook/sveltekit';
-import '@fontsource/jetbrains-mono/400.css';
-import '@fontsource/mona-sans/300.css';
-import '@fontsource/mona-sans/400.css';
 import '../src/app.css';
 
 const preview: Preview = {

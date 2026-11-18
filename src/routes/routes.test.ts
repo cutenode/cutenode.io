@@ -29,7 +29,7 @@ describe('routes', () => {
 		const { groups } = await loadIndex();
 		const slugs = groups.flatMap((group) => group.projects.map(({ slug }) => slug));
 
-		expect(groups.map(({ section }) => section)).toEqual(['active', 'tangled', 'popular']);
+		expect(groups.map(({ section }) => section)).toEqual(['active', 'tangled']);
 		expect(new Set(slugs).size).toBe((await entries()).length);
 	});
 

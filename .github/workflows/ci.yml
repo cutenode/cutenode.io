@@ -28,8 +28,8 @@ jobs:
       - run: pnpm format:check
       - run: pnpm lint
       - run: pnpm typecheck
-      # Component and story tests run in Chromium: every story four times (light, dark, phone, reduced motion), each
-      # with axe. pnpm lint above also fails on a component or page without a story.
+      # Component and story tests run in Chromium: every story three times (light, dark, phone), each with axe.
+      # pnpm lint above also fails on a component or page without a story.
       - run: pnpm test:coverage
       - run: pnpm build-storybook
 

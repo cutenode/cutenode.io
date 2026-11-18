@@ -1,6 +1,6 @@
 ---
 name: remain
-description: A GitHub Action that merges main into conflicting PRs when the conflicts are mechanical.
+description: a GitHub Action that merges main into conflicting PRs when the conflicts are mechanical
 status: active
 forge: github
 repo: https://github.com/cutenode/remain
@@ -56,6 +56,6 @@ stars: 0
 pushed: 2026-11-16
 ---
 
-remain merges the base branch into a pull request GitHub marks as conflicting, when every conflict is one it can resolve without guessing. Anything else gets a `needs-owner` label and a comment, and remain never touches code conflicts.
+remain merges the base branch into a pull request GitHub marks as conflicting, as long as every conflict is mechanical. Anything else gets a `needs-owner` label and a comment listing the files. remain never guesses at code.
 
-It's for repos where open pull requests keep conflicting over lockfiles and append-only lists. Setup is a GitHub App (so its pushes start CI), a `.github/remain.json` with your rules, and a workflow. The README walks through all three.
+Setup is a GitHub App (so its pushes start CI), a `.github/remain.json` with your rules and a workflow. The README walks through each one.

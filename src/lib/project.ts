@@ -1,12 +1,12 @@
 // The schema lives server-side so zod never reaches the browser; only its type comes here.
 import type { Frontmatter } from './server/schema.ts';
 
-export const STATUSES = ['active', 'popular', 'archived'] as const;
+export const STATUSES = ['active', 'archived'] as const;
 
 export type Status = (typeof STATUSES)[number];
 
 /** The index's sections, in page order: tangled projects get their own, after the active work on GitHub. */
-export const SECTIONS = ['active', 'tangled', 'popular', 'archived'] as const;
+export const SECTIONS = ['active', 'tangled', 'archived'] as const;
 
 export type Section = (typeof SECTIONS)[number];
 
@@ -45,7 +45,6 @@ const newestFirst = (a: Project, b: Project) => lastSeen(b).localeCompare(lastSe
 const BY_SECTION: Record<Section, (a: Project, b: Project) => number> = {
 	active: newestFirst,
 	tangled: newestFirst,
-	popular: (a, b) => (b.stars ?? 0) - (a.stars ?? 0) || a.name.localeCompare(b.name),
 	archived: (a, b) => a.name.localeCompare(b.name)
 };
 

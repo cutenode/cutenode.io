@@ -3,7 +3,7 @@
 	import { expect, within } from 'storybook/test';
 	import PageSection from './PageSection.svelte';
 
-	const { Story } = defineMeta({ title: 'Components/PageSection', parameters: { layout: 'fullscreen' } });
+	const { Story } = defineMeta({ title: 'Components/PageSection' });
 </script>
 
 <Story
@@ -16,9 +16,7 @@
 		await expect(section.getByRole('heading', { level: 2, name: 'features' })).toBeVisible();
 	}}
 >
-	<div style="padding-inline: var(--margin)">
-		<PageSection id="features" label="features">
-			<p style="margin: 0">Creates or updates templates in every child repo.</p>
-		</PageSection>
-	</div>
+	<PageSection id="features" label="features">
+		<p>Creates or updates templates in every child repo.</p>
+	</PageSection>
 </Story>

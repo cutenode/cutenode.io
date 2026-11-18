@@ -3,16 +3,15 @@ import { readFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import satori from 'satori';
 
-// Satori reads WOFF (not WOFF2), and the same two weights the site ships.
-const fontFile = (file: string) => readFile(createRequire(import.meta.url).resolve(`@fontsource/${file}`));
-
+// Satori can't reach system fonts and reads WOFF (not WOFF2), so the images bring one plain sans of their own. It's
+// only read here at build time; pages use the visitor's system font.
 const fonts = async () => [
-	{ name: 'Mona Sans', weight: 300 as const, data: await fontFile('mona-sans/files/mona-sans-latin-300-normal.woff') },
-	{ name: 'Mona Sans', weight: 400 as const, data: await fontFile('mona-sans/files/mona-sans-latin-400-normal.woff') },
 	{
-		name: 'JetBrains Mono',
+		name: 'Mona Sans',
 		weight: 400 as const,
-		data: await fontFile('jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff')
+		data: await readFile(
+			createRequire(import.meta.url).resolve('@fontsource/mona-sans/files/mona-sans-latin-400-normal.woff')
+		)
 	}
 ];
 
@@ -25,56 +24,36 @@ const box = (style: Record<string, string | number>, children: Node | Node[] | s
 	props: { style: { display: 'flex', ...style }, children }
 });
 
-const label = (text: string) =>
-	box({ fontFamily: 'JetBrains Mono', fontSize: 22, letterSpacing: 1, textTransform: 'uppercase' }, text);
-
 export type OgCard = {
-	/** Large, light: the project's name, or the site's tagline. */
+	/** The project's name, or the site's tagline. */
 	title: string;
 	subtitle: string;
-	/** Small mono labels along the bottom rule. */
+	/** Plain details under a rule at the bottom, joined into one line. */
 	footer: string[];
 };
 
 /**
- * A 1200 by 630 PNG in the site's style, black on white with hairlines, rendered at build time so each page has its
- * own preview image.
+ * A 1200 by 630 PNG that looks like the top of one of the site's pages: black on white, the title over its subtitle,
+ * rendered at build time so each page has its own preview image.
  */
 export const renderOg = async ({ title, subtitle, footer }: OgCard) => {
 	const card = box(
 		{
-			width: 1200 - 2 * 64,
-			height: 630 - 2 * 64,
+			width: 1200 - 2 * 80,
+			height: 630 - 2 * 80,
 			flexDirection: 'column',
-			padding: 64,
+			padding: 80,
 			boxSizing: 'content-box',
 			background: '#ffffff',
-			color: '#000000'
+			color: '#000000',
+			fontFamily: 'Mona Sans',
+			fontSize: 32
 		},
 		[
-			box({ width: '100%', justifyContent: 'space-between', paddingBottom: 16, borderBottom: '1.5px solid #000000' }, [
-				label('cutenode'),
-				label('cutenode.io')
-			]),
-			box(
-				{
-					marginTop: 'auto',
-					fontFamily: 'Mona Sans',
-					fontWeight: 300,
-					fontSize: title.length > 18 ? 84 : 124,
-					letterSpacing: -6,
-					lineHeight: 0.95
-				},
-				title
-			),
-			box(
-				{ marginTop: 24, fontFamily: 'Mona Sans', fontSize: 30, lineHeight: 1.3, color: '#5e5e5e', maxWidth: 1000 },
-				subtitle
-			),
-			box(
-				{ width: '100%', marginTop: 36, gap: 48, paddingTop: 16, borderTop: '1.5px solid #d4d4d4', color: '#5e5e5e' },
-				footer.map((text) => label(text))
-			)
+			box({ textDecoration: 'underline' }, 'cutenode.io'),
+			box({ marginTop: 'auto', fontSize: title.length > 24 ? 72 : 96, lineHeight: 1.1 }, title),
+			box({ marginTop: 24, fontSize: 36, lineHeight: 1.35, color: '#5e5e5e', maxWidth: 960 }, subtitle),
+			box({ marginTop: 40, paddingTop: 20, borderTop: '2px solid #d4d4d4', color: '#5e5e5e' }, footer.join(' · '))
 		]
 	);
 

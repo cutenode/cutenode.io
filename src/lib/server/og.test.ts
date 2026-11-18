@@ -19,4 +19,12 @@ describe('renderOg', () => {
 
 		expect(pngSize(png)).toEqual({ signature: 0x89504e47, width: 1200, height: 630 });
 	});
+
+	it('sets a long title smaller than a short one', async () => {
+		// One character more drops the title from 96px to 72px, so the card holds less ink and compresses smaller.
+		const long = await renderOg({ ...card, title: 'a'.repeat(25) });
+		const short = await renderOg({ ...card, title: 'a'.repeat(24) });
+
+		expect(long.length).toBeLessThan(short.length);
+	});
 });

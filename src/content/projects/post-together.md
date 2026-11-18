@@ -1,6 +1,6 @@
 ---
 name: post-together
-description: Post Markdown files to Bluesky from a GitHub Action, a Tangled Spindle, or the CLI.
+description: post Markdown files to Bluesky from GitHub Actions or a Tangled Spindle
 status: active
 forge: github
 repo: https://github.com/cutenode/post-together
@@ -74,6 +74,6 @@ stars: 0
 pushed: 2026-10-30
 ---
 
-post-together turns a folder of Markdown files into Bluesky posts. Drop a file in `posts/`, push, and it goes out as a post, or as a thread if it runs long. It's for anyone who'd rather write posts in a repo than in a text box.
+post-together posts the Markdown files in a folder to Bluesky. Add a file to `posts/` and push, and it goes out as one post, or as a thread if it's too long for one.
 
-The same code runs as a GitHub Action, a step in a Tangled Spindle workflow, or a plain CLI. It logs in with an app password, and on GitHub it can commit its state file back so the repo remembers what's been posted.
+The same code runs as a GitHub Action, as a step in a Tangled Spindle workflow or as a plain CLI. It logs in with an app password, and on GitHub it can commit its state file back so the repo keeps track of what's been posted.

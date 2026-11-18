@@ -1,6 +1,6 @@
 ---
 name: retro-weekly
-description: A template repo that runs retrogen weekly to write retros for an org or user.
+description: template repo for running retrogen weekly to write retros for your org or user
 status: active
 forge: github
 repo: https://github.com/cutenode/retro-weekly
@@ -38,6 +38,6 @@ stars: 5
 pushed: 2026-11-15
 ---
 
-A template for running [retrogen](https://github.com/cutenode/retrogen) on a schedule, so an org or a user gets a retro of the past week as a pull request.
+A template repo that runs [retrogen](https://github.com/cutenode/retrogen) every week and opens a pull request with a retro for your GitHub org, or for a single user. If you care about the JavaScript underneath, look at retrogen.
 
-Make a repo from the template, set `organization` in `generate.js` to your org or username, and the workflow does the rest with the repo's own `GITHUB_TOKEN`. To change the cadence, adjust the date range in `generate.js` and the cron in `run.yml` to match.
+Make a repo from the template and set `organization` in `generate.js` to your org or username. The workflow does the rest with the repo's own `GITHUB_TOKEN`. To run it more or less often, change the date range in `generate.js` and the cron in `run.yml` to match.

@@ -7,14 +7,13 @@
 		LONG_NAME,
 		NO_STARS,
 		OWN_SITE,
-		POPULAR,
 		TANGLED,
 		WITH_LINKS
 	} from '#lib/fixtures.ts';
 	import Layout from '../+layout.svelte';
 	import ProjectPage from './+page.svelte';
 
-	const { Story } = defineMeta({ title: 'Pages/Project', parameters: { layout: 'fullscreen' } });
+	const { Story } = defineMeta({ title: 'Pages/Project' });
 </script>
 
 <Story
@@ -27,16 +26,12 @@
 		await expect(page.getByRole('link', { name: 'github repo' })).toHaveAttribute('href', 'https://github.com/cutenode/tsdocrs');
 		await expect(page.getByRole('link', { name: 'crates.io' })).toBeVisible();
 		await expect(page.getByRole('link', { name: 'website' })).toBeVisible();
-		await expect(page.getByText('stars', { selector: 'dt' })).toBeVisible();
+		await expect(page.getByText(/^[\d,.k]+ stars$/)).toBeVisible();
 	}}
 >
 	<Layout params={{}} data={{}}>
 		<ProjectPage data={{ project: WITH_LINKS }} params={{ slug: 'tsdocrs' }} form={undefined} />
 	</Layout>
-</Story>
-
-<Story name="Popular" asChild>
-	<ProjectPage data={{ project: POPULAR }} params={{ slug: 'good-first-issue' }} form={undefined} />
 </Story>
 
 <Story
@@ -45,9 +40,9 @@
 	play={async ({ canvasElement }) => {
 		const page = within(canvasElement);
 
-		await expect(page.getByText('started', { selector: 'dt' })).toBeVisible();
+		await expect(page.getByText(/^started /)).toBeVisible();
 		await expect(page.getByRole('link', { name: 'tangled repo' })).toBeVisible();
-		await expect(canvasElement.querySelector('.prose')).toBeNull();
+		await expect(page.queryByRole('heading', { level: 2, name: 'about' })).toBeNull();
 	}}
 >
 	<ProjectPage data={{ project: { ...TANGLED, html: '' } }} params={{ slug: 'upvote.at' }} form={undefined} />
@@ -57,14 +52,14 @@
 	name="No stars"
 	asChild
 	play={async ({ canvasElement }) => {
-		await expect(within(canvasElement).queryByText('stars', { selector: 'dt' })).toBeNull();
+		await expect(within(canvasElement).queryByText(/ stars$/)).toBeNull();
 	}}
 >
 	<ProjectPage data={{ project: NO_STARS }} params={{ slug: 'remain-e2e' }} form={undefined} />
 </Story>
 
 <Story name="Long name" asChild>
-	<ProjectPage data={{ project: LONG_NAME }} params={{ slug: 'github-actions-ci-templates' }} form={undefined} />
+	<ProjectPage data={{ project: LONG_NAME }} params={{ slug: 'retro-weekly-organization-retrospectives' }} form={undefined} />
 </Story>
 
 <Story name="Long description" asChild>
@@ -89,7 +84,7 @@
 			'links'
 		]);
 		await expect(page.getByRole('link', { name: 'release v1.2.0' })).toBeVisible();
-		await expect(page.getByText('v1.2.0, nov 1, 2026')).toBeVisible();
+		await expect(page.getByText('latest v1.2.0, nov 1, 2026')).toBeVisible();
 	}}
 >
 	<Layout params={{}} data={{}}>

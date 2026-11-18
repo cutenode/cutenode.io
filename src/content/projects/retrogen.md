@@ -1,6 +1,6 @@
 ---
 name: retrogen
-description: Generates Markdown retrospectives from GitHub activity.
+description: a tool for generating Markdown retros from GitHub activity
 status: active
 forge: github
 repo: https://github.com/cutenode/retrogen
@@ -47,6 +47,6 @@ stars: 19
 pushed: 2026-02-13
 ---
 
-retrogen pulls GitHub activity for a user or organization and turns it into a Markdown retro. It's for maintainers and teams who want a weekly or monthly write-up of what happened without collecting it by hand.
+retrogen pulls GitHub activity for a user or organization over a date range and turns it into a Markdown retro.
 
-It's split into three packages: `@retrogen/core` gets the data, `@retrogen/templates` renders it, and `@retrogen/generate` puts the two together. It expects a GitHub personal access token in `GITHUB_TOKEN`. For a ready-made weekly setup, see [retro-weekly](https://github.com/cutenode/retro-weekly).
+`@retrogen/core` gets the data, `@retrogen/templates` renders it and `@retrogen/generate` puts the two together. It needs a GitHub personal access token in `GITHUB_TOKEN`. For a weekly setup that's ready to go, see [retro-weekly](https://github.com/cutenode/retro-weekly).

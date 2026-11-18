@@ -1,6 +1,6 @@
 ---
 name: statusky
-description: A menu bar app that tells you when the Atmosphere breaks.
+description: a menu bar app that tells you when the Atmosphere breaks
 status: active
 forge: github
 repo: https://github.com/cutenode/statusky
@@ -32,6 +32,6 @@ stars: 0
 pushed: 2026-10-04
 ---
 
-Statusky watches the accounts that report on AT Protocol infrastructure, like [status.bsky.app](https://bsky.app/profile/status.bsky.app) and [status.blacksky.community](https://bsky.app/profile/status.blacksky.community), and tells you from the menu bar when something's broken. It's for anyone who depends on Bluesky or the rest of the Atmosphere and wants to hear about an outage without going to look.
+Statusky watches the accounts that report on AT Protocol infrastructure, like [status.bsky.app](https://bsky.app/profile/status.bsky.app) and [status.blacksky.community](https://bsky.app/profile/status.blacksky.community), and tells you from the menu bar when something breaks.
 
-There's no account, login or API key: everything comes from the public AppView. It can also take pushed updates from hosted status pages, and it measures the network itself on a schedule, so you're not only going on what operators post.
+No account, no login, no API key: everything comes from the public AppView. It can also take pushed updates from hosted status pages, and it checks the network itself on a schedule, so you're not only going on what operators post.

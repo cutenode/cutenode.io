@@ -1,6 +1,6 @@
 ---
 name: upvote.at
-description: Upvotes and link aggregation in the Atmosphere.
+description: atmospheric upvotes and link aggregation
 status: active
 forge: tangled
 repo: https://tangled.org/upvote.at/upvote.at
@@ -14,6 +14,6 @@ features:
 created: 2026-07-30
 ---
 
-upvote.at is a link aggregator where the votes live in the Atmosphere. Every URL has one submission, and the earliest upvote counts as the submission, so credit goes to the link's origin instead of whoever raced to post it first.
+upvote.at is a link aggregator where the upvotes live in the Atmosphere. Upvoting writes a record to your own PDS, and any public `at.upvote.signal` record counts, wherever it was written.
 
-It's for reading and ranking links with people across the Atmosphere, and for apps that want to write upvotes of their own: any public `at.upvote.signal` record counts, wherever it was written.
+Every URL has one submission, and the earliest upvote counts as that submission. The link's origin gets the credit, and a link keeps its history when it's shared again.

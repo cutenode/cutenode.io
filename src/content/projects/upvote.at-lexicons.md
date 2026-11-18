@@ -1,6 +1,6 @@
 ---
 name: lexicons
-description: The AT Protocol lexicons behind upvote.at.
+description: upvote.at's AT Protocol lexicons
 status: active
 forge: tangled
 repo: https://tangled.org/upvote.at/lexicons
