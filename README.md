@@ -60,16 +60,18 @@ set it up once, with the [Railway CLI](https://docs.railway.com/cli) 5.42.1 or n
 
 ```bash
 railway init --name cutenode.io        # or railway link, if the project exists
-railway config plan                    # what .railway/railway.ts would create
-railway config apply
+railway config apply                   # creates the service; railway config plan previews it
+railway domain cutenode.io             # Railway configuration can't register a custom domain,
+railway domain www.cutenode.io         # so each host is added once by hand
+railway config plan                    # should report no changes
 railway variables --set GITHUB_TOKEN=… # optional: any token, a fine-grained one with no permissions works
 ```
 
-after that, every push to `main` deploys. `pnpm run deploy` deploys a local checkout instead.
+if `railway config apply` stops at the custom domains, run the two `railway domain` lines and apply again. after that, every push to `main` deploys. `pnpm run deploy` deploys a local checkout instead.
 
 ### dns
 
-cutenode.io's nameservers are Vercel's, so the records go in Vercel's DNS for the domain. Railway shows the exact values under the service's domains once `railway config apply` has added them:
+cutenode.io's nameservers are Vercel's, so the records go in Vercel's DNS for the domain. `railway domain` prints the exact values, and the service's domain settings show them too:
 
 | name             | type  | value                                                                                                           |
 | ---------------- | ----- | --------------------------------------------------------------------------------------------------------------- |
