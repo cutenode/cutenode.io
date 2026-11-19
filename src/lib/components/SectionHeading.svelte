@@ -14,7 +14,10 @@
 <p class="muted">{BLURBS[section]}</p>
 
 <style>
+	/* The heading, its blurb and its list are one group: the blurb sits at the tight gap under the heading, and the
+	   list starts right under the blurb, so the first row's own padding is the only space between them. */
 	h2 + p {
 		margin-top: 0;
+		margin-bottom: 0;
 	}
 </style>

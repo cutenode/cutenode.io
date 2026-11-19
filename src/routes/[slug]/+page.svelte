@@ -18,6 +18,9 @@
 	// "get started" section only appears when it has more to say: other ways to install, or the site leads instead.
 	const showInstall = $derived(!!project.install && (!!project.site || project.install.length > 1));
 
+	// Where a link goes, as its host without the "www.", so each row says where it leaves for.
+	const host = (href: string) => new URL(href).host.replace(/^www\./, '');
+
 	const links = $derived(
 		[
 			project.site && { label: 'website', href: project.site },
@@ -48,8 +51,13 @@
 
 <Seo title="{project.name} | {SITE_NAME}" description={project.description} {path} {jsonLd} />
 
+<!-- Content text is plain, except that `backticks` mark code, as in Markdown: a flag, a command. -->
+{#snippet text(value: string)}
+	{#each value.split('`') as part, index (index)}{#if index % 2}<code>{part}</code>{:else}{part}{/if}{/each}
+{/snippet}
+
 <article data-tier={project.homepage ? 'homepage' : project.site ? 'site' : 'short'}>
-	<p class="muted"><a href="/">all projects</a></p>
+	<p class="muted crumb"><a href="/">all projects</a></p>
 	<h1><ProjectName name={project.name} /></h1>
 	<p class="tagline">{project.description}</p>
 
@@ -61,7 +69,7 @@
 		<p class="visit"><a href={project.repo}>see it on {project.forge}</a></p>
 	{/if}
 
-	<ul class="facts muted">
+	<ul class="facts details">
 		<li>{project.status}</li>
 		{#if project.forge === 'github' && project.stars}<li>{stars(project.stars)}</li>{/if}
 		{#if project.release}<li>latest {project.release.version}, {day(project.release.date)}</li>{/if}
@@ -101,7 +109,7 @@
 		<PageSection id="features" label="features">
 			<ul>
 				{#each project.features as feature (feature)}
-					<li>{feature}</li>
+					<li>{@render text(feature)}</li>
 				{/each}
 			</ul>
 		</PageSection>
@@ -113,7 +121,7 @@
 				{#each project.options as option (option.name)}
 					<dt><code>{option.name}</code></dt>
 					<dd>
-						{option.description}
+						{@render text(option.description)}
 						{#if option.default}<span class="muted">(default: {option.default})</span>{/if}
 					</dd>
 				{/each}
@@ -135,46 +143,59 @@
 			<dl>
 				{#each project.faq as entry (entry.question)}
 					<dt>{entry.question}</dt>
-					<dd>{entry.answer}</dd>
+					<dd>{@render text(entry.answer)}</dd>
 				{/each}
 			</dl>
 		</PageSection>
 	{/if}
 
 	<PageSection id="links" label="links">
-		<ul>
+		<ul class="rows">
 			{#each links as link (link.label)}
-				<li><a href={link.href}>{link.label}</a></li>
+				<li>
+					<span class="line">
+						<a href={link.href}>{link.label}</a>
+						<span class="details"><span>{host(link.href)}</span></span>
+					</span>
+				</li>
 			{/each}
 		</ul>
 	</PageSection>
 </article>
 
 <style>
+	/* The head is one group, read in order: where you are, the name, what it is, how to get it, then the facts. */
+	.crumb {
+		margin-bottom: var(--gap-tight);
+	}
+
 	h1 {
-		margin-top: 0.5rem;
 		overflow-wrap: break-word;
 	}
 
+	/* What the project is: the page's second voice, a step under the name. The action that follows starts a new beat,
+	   so it sits a little further off. */
 	.tagline {
-		font-size: 1.25rem;
+		margin-bottom: var(--space-5);
+		font-size: var(--text-lead);
+		line-height: 1.45;
 	}
 
-	/* The facts as one quiet line, separated by middle dots. */
+	/* The facts as one quiet line of details, closing the head. */
 	.facts {
 		display: flex;
-		flex-wrap: wrap;
-		gap: 0 0.5rem;
-		padding: 0;
-		list-style: none;
+		margin-bottom: 0;
 	}
 
-	.facts li + li::before {
-		content: '\00b7';
-		margin-right: 0.5rem;
+	/* Feature and compatibility lists: a little air between items, so wrapped lines stay with their own item. The
+	   facts line and the links have their own styles. */
+	ul:not([class]) > li + li {
+		margin-top: var(--space-1);
 	}
 
+	/* A term sits directly on its definition, and each pair is a block apart from the next. The indent matches the
+	   lists'. */
 	dd {
-		margin: 0.15rem 0 0.75rem 1.25rem;
+		margin: 0 0 var(--gap-block) var(--space-5);
 	}
 </style>

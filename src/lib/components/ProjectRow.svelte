@@ -8,23 +8,26 @@
 	const when = $derived(project.pushed ?? project.created);
 	// Where you'd get it: its registry when it's published, otherwise the forge it lives on.
 	const kind = $derived(project.package ? registryName(project.package) : project.forge);
-	const details = $derived(
-		[
-			kind,
-			project.forge === 'github' && project.stars ? stars(project.stars) : undefined,
-			when && year(when)
-		].filter((detail) => !!detail)
-	);
+	const starCount = $derived(project.forge === 'github' && project.stars ? stars(project.stars) : undefined);
 </script>
 
-<!-- One entry of the index: the name as a link, what it is, then where it lives, stars and year. -->
+<!-- One project in the index (a .rows list): the name and its details on the first line, what it is under them. -->
 <li>
-	<a href="/{project.slug}/"><ProjectName name={project.name} /></a>: {project.description}
-	<span class="muted">({details.join(', ')})</span>
+	<span class="line">
+		<a href="/{project.slug}/"><ProjectName name={project.name} /></a>
+		<span class="details">
+			<span>{kind}</span>
+			{#if starCount}<span>{starCount}</span>{/if}
+			{#if when}<span>{year(when)}</span>{/if}
+		</span>
+	</span>
+	<span class="description">{project.description}</span>
 </li>
 
 <style>
-	li {
-		margin-top: 0.6rem;
+	/* What it is, in the secondary grey, so the name stays the row's lead. */
+	.description {
+		display: block;
+		color: var(--ink-soft);
 	}
 </style>

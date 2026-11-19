@@ -46,7 +46,7 @@ test('every project on the index opens its page', async ({ page, request }) => {
 	await page.goto('/');
 
 	const hrefs = await page
-		.locator('main section li > a')
+		.locator('main section .rows a')
 		.evaluateAll((links) => links.map((link) => link.getAttribute('href')));
 
 	expect(hrefs.length).toBeGreaterThan(10);

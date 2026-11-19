@@ -12,7 +12,7 @@
 
 <!-- In a narrow, large heading, where the break points matter. -->
 {#snippet narrow(args: { name: string })}
-	<h2 style="width: 10rem; font-size: 2rem; margin: 0"><ProjectName {...args} /></h2>
+	<h2 style="width: 10rem; font-size: var(--text-h1); margin: 0"><ProjectName {...args} /></h2>
 {/snippet}
 
 <Story

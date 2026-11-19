@@ -12,9 +12,9 @@
 	});
 </script>
 
-<!-- A row is a list item, so each story puts it in a list. -->
+<!-- A row is a list item, so each story puts it in a .rows list, as the index does. -->
 {#snippet listed(args: { project: Project })}
-	<ul><ProjectRow {...args} /></ul>
+	<ul class="rows"><ProjectRow {...args} /></ul>
 {/snippet}
 
 <Story
@@ -24,7 +24,10 @@
 		const row = within(canvasElement);
 
 		await expect(row.getByRole('link', { name: 'docov' })).toHaveAttribute('href', '/docov/');
-		await expect(row.getByText("(github, 3 stars, 2026)")).toBeVisible();
+		await expect(row.getByText('npm')).toBeVisible();
+		await expect(row.getByText('3 stars')).toBeVisible();
+		await expect(row.getByText('2026')).toBeVisible();
+		await expect(row.getByText('JSDoc and TSDoc coverage for JavaScript and TypeScript')).toBeVisible();
 	}}
 />
 
@@ -34,7 +37,7 @@
 	template={listed}
 	play={async ({ canvasElement }) => {
 		// A published project shows where you'd install it from instead of its forge.
-		await expect(within(canvasElement).getByText(/crates.io/)).toBeVisible();
+		await expect(within(canvasElement).getByText('crates.io')).toBeVisible();
 	}}
 />
 
@@ -45,7 +48,7 @@
 	args={{ project: TANGLED }}
 	template={listed}
 	play={async ({ canvasElement }) => {
-		await expect(within(canvasElement).getByText(/\(tangled/)).toBeVisible();
+		await expect(within(canvasElement).getByText('tangled')).toBeVisible();
 	}}
 />
 
@@ -68,6 +71,7 @@
 	template={listed}
 	play={async ({ canvasElement }) => {
 		// Neither a push nor a start date: the details end at the forge.
-		await expect(within(canvasElement).getByText('(github)')).toBeVisible();
+		await expect(within(canvasElement).getByText('github')).toBeVisible();
+		await expect(within(canvasElement).queryByText(/^\d{4}$/)).toBeNull();
 	}}
 />

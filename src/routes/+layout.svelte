@@ -28,12 +28,17 @@
 	.skip {
 		position: absolute;
 		top: -4rem;
-		padding: 0.5rem 0.75rem;
+		padding: var(--space-2) var(--space-3);
 		background: var(--ink);
 		color: var(--paper);
 	}
 
 	.skip:focus {
-		top: 0.5rem;
+		top: var(--space-2);
+	}
+
+	/* The same generous gap below the header and above the footer, so the content reads as the page. */
+	main {
+		margin-block: var(--gap-page);
 	}
 </style>

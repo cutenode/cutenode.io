@@ -9,3 +9,10 @@
 	<h2 id="{id}-heading">{label}</h2>
 	{@render children()}
 </section>
+
+<style>
+	/* Sections are the page's major groups: a section's gap apart, each heading at the tight gap above its content. */
+	section {
+		margin-top: var(--gap-section);
+	}
+</style>

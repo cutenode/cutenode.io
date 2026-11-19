@@ -21,31 +21,41 @@
 </header>
 
 <style>
+	/* The name leads; the nav sits at the far end in the secondary grey, so the two never compete. */
 	nav {
 		display: flex;
 		flex-wrap: wrap;
+		justify-content: space-between;
 		align-items: center;
-		gap: 0.25rem 1.5rem;
+		gap: 0 var(--space-5);
 	}
 
 	.home {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.4rem;
+		gap: var(--space-2);
 	}
 
 	ul {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0 1rem;
+		gap: 0 var(--space-4);
 		margin: 0;
 		padding: 0;
 		list-style: none;
 	}
 
+	ul a {
+		color: var(--ink-soft);
+	}
+
+	ul a:hover {
+		color: var(--ink);
+	}
+
 	/* Links are inline text, so give them a touch target taller than the line. */
 	a {
 		display: inline-block;
-		padding-block: 0.6rem;
+		padding-block: var(--space-3);
 	}
 </style>

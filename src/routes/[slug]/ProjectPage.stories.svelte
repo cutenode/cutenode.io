@@ -63,7 +63,7 @@
 </Story>
 
 <Story name="Long description" asChild>
-	<ProjectPage data={{ project: LONG_DESCRIPTION }} params={{ slug: 'trending.upvote.at' }} form={undefined} />
+	<ProjectPage data={{ project: LONG_DESCRIPTION }} params={{ slug: 'remain' }} form={undefined} />
 </Story>
 
 <Story
@@ -84,6 +84,9 @@
 			'links'
 		]);
 		await expect(page.getByRole('link', { name: 'release v1.2.0' })).toBeVisible();
+		// Backticks in content text render as code, and the backticks themselves don't show.
+		await expect(page.getByText('dry-run', { selector: 'li code' })).toBeVisible();
+		await expect(page.queryByText(/`/)).toBeNull();
 		await expect(page.getByText('latest v1.2.0, nov 1, 2026')).toBeVisible();
 	}}
 >

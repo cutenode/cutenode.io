@@ -65,7 +65,7 @@ export default defineConfig({
 				'scripts/**/*.test.ts',
 				'scripts/story-coverage.ts'
 			],
-			thresholds: { lines: 99, functions: 99, branches: 85, statements: 99 }
+			thresholds: { lines: 99, functions: 99, branches: 86, statements: 99 }
 		},
 		projects: [
 			{
