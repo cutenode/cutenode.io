@@ -1,0 +1,48 @@
+name: Set up
+description: Node, pnpm, dependencies and Playwright's Chromium, each restored from cache when it can be.
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version-file: .node-version
+
+    # Corepack, which ships with this Node, runs the pnpm that packageManager pins: one download, cached by version.
+    # pnpm/action-setup bootstrapped a pnpm through npm first and then downloaded the pinned one, which took six minutes
+    # on a slow registry.
+    - id: versions
+      shell: bash
+      run: |
+        echo "pnpm=$(jq -r .packageManager package.json)" >> "$GITHUB_OUTPUT"
+        echo "corepack-home=$HOME/.cache/node/corepack" >> "$GITHUB_OUTPUT"
+    - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ${{ steps.versions.outputs.corepack-home }}
+        key: corepack-${{ runner.os }}-${{ steps.versions.outputs.pnpm }}
+    - id: pnpm
+      shell: bash
+      run: |
+        corepack enable pnpm
+        echo "store=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+    - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ${{ steps.pnpm.outputs.store }}
+        key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+        restore-keys: pnpm-store-${{ runner.os }}-
+    - shell: bash
+      run: pnpm install --frozen-lockfile
+
+    # The runner image already has every library Chromium needs; --with-deps only added fonts for other scripts, and
+    # its apt run took six and a half minutes. So only the browser is fetched, and only when its version changes.
+    - id: playwright
+      shell: bash
+      run: echo "version=$(pnpm exec playwright --version)" >> "$GITHUB_OUTPUT"
+    - id: playwright-cache
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+    - if: steps.playwright-cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: pnpm exec playwright install chromium

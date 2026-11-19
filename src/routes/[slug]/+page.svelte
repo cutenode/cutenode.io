@@ -1,199 +1,201 @@
 <script lang="ts">
-	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
-	import ExternalLink from '@lucide/svelte/icons/external-link';
-	import ProjectCard from '#lib/components/ProjectCard.svelte';
+	import CommandBlock from '#lib/components/CommandBlock.svelte';
+	import PageSection from '#lib/components/PageSection.svelte';
+	import ProjectName from '#lib/components/ProjectName.svelte';
 	import Seo from '#lib/components/Seo.svelte';
-	import { count, day } from '#lib/format.ts';
-	import { registryName } from '#lib/project.ts';
-	import { SITE_NAME } from '#lib/site.ts';
+	import { day, stars } from '#lib/format.ts';
+	import { issuesUrl, registryName } from '#lib/project.ts';
+	import { SITE_NAME, SITE_URL } from '#lib/site.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 
 	const project = $derived(data.project);
+	const path = $derived(`/${project.slug}/`);
+	const siteHost = $derived(project.site && new URL(project.site).host);
+
+	// The top of the page already shows the first install command (when there's no site to send people to), so the
+	// "get started" section only appears when it has more to say: other ways to install, or the site leads instead.
+	const showInstall = $derived(!!project.install && (!!project.site || project.install.length > 1));
+
+	// Where a link goes, as its host without the "www.", so each row says where it leaves for.
+	const host = (href: string) => new URL(href).host.replace(/^www\./, '');
 
 	const links = $derived(
 		[
-			{ label: `${project.forge} repo`, href: project.repo },
 			project.site && { label: 'website', href: project.site },
-			project.package && { label: registryName(project.package), href: project.package }
+			{ label: `${project.forge} repo`, href: project.repo },
+			project.package && { label: registryName(project.package), href: project.package },
+			// Some projects' docs are their site; one link is enough.
+			project.docs && project.docs !== project.site && { label: 'docs', href: project.docs },
+			{ label: 'issues', href: issuesUrl(project) },
+			project.changelog && { label: 'changelog', href: project.changelog },
+			project.release && { label: `release ${project.release.version}`, href: project.release.url }
 		].filter((link) => !!link)
 	);
+
+	// What search engines read: the project as a piece of source code, with this page as its home.
+	const jsonLd = $derived({
+		'@context': 'https://schema.org',
+		'@type': 'SoftwareSourceCode',
+		name: project.name,
+		description: project.description,
+		url: new URL(path, SITE_URL).href,
+		codeRepository: project.repo,
+		...(project.site && { sameAs: project.site }),
+		...(project.release && { version: project.release.version }),
+		...(project.pushed && { dateModified: project.pushed }),
+		author: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL }
+	});
 </script>
 
-<Seo title="{project.name} | {SITE_NAME}" description={project.description} path="/{project.slug}/" />
+<Seo title="{project.name} | {SITE_NAME}" description={project.description} {path} {jsonLd} />
 
-<a class="back" href="/"><ArrowLeft aria-hidden="true" size="1em" />all projects</a>
+<!-- Content text is plain, except that `backticks` mark code, as in Markdown: a flag, a command. -->
+{#snippet text(value: string)}
+	{#each value.split('`') as part, index (index)}{#if index % 2}<code>{part}</code>{:else}{part}{/if}{/each}
+{/snippet}
 
-<div class="layout">
-	<div class="card-slot">
-		<ProjectCard {project} number={data.number} total={data.total} large />
-	</div>
+<article data-tier={project.homepage ? 'homepage' : project.site ? 'site' : 'short'}>
+	<p class="muted crumb"><a href="/">all projects</a></p>
+	<h1><ProjectName name={project.name} /></h1>
+	<p class="tagline">{project.description}</p>
 
-	<article>
-		<h1>{project.name}</h1>
-		<p class="lead">{project.description}</p>
+	{#if project.site}
+		<p class="visit"><a href={project.site}>visit {siteHost}</a></p>
+	{:else if project.install}
+		<CommandBlock label={project.install[0].label} command={project.install[0].command} />
+	{:else}
+		<p class="visit"><a href={project.repo}>see it on {project.forge}</a></p>
+	{/if}
 
-		<ul class="links">
-			{#each links as link (link.href)}
+	<ul class="facts details">
+		<li>{project.status}</li>
+		{#if project.forge === 'github' && project.stars}<li>{stars(project.stars)}</li>{/if}
+		{#if project.release}<li>latest {project.release.version}, {day(project.release.date)}</li>{/if}
+		{#if project.pushed}
+			<li>last push {day(project.pushed)}</li>
+		{:else if project.created}
+			<li>started {day(project.created)}</li>
+		{/if}
+	</ul>
+
+	{#if project.html}
+		<PageSection id="about" label="about">
+			<!-- Our own content files, rendered at build. -->
+			{@html project.html}
+		</PageSection>
+	{/if}
+
+	{#if project.install && showInstall}
+		<PageSection id="install" label="get started">
+			{#each project.install as step (step.command)}
+				<CommandBlock label={step.label} command={step.command} />
+			{/each}
+		</PageSection>
+	{/if}
+
+	{#if project.usage}
+		<PageSection id="usage" label="usage">
+			<!-- Scrolls sideways when a line is long, so it takes focus for keyboard users. -->
+			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+			<pre tabindex="0" role="group" aria-label="usage example"><code data-language={project.usage.language}
+					>{project.usage.code}</code
+				></pre>
+		</PageSection>
+	{/if}
+
+	{#if project.features}
+		<PageSection id="features" label="features">
+			<ul>
+				{#each project.features as feature (feature)}
+					<li>{@render text(feature)}</li>
+				{/each}
+			</ul>
+		</PageSection>
+	{/if}
+
+	{#if project.options}
+		<PageSection id="options" label="options">
+			<dl>
+				{#each project.options as option (option.name)}
+					<dt><code>{option.name}</code></dt>
+					<dd>
+						{@render text(option.description)}
+						{#if option.default}<span class="muted">(default: {option.default})</span>{/if}
+					</dd>
+				{/each}
+			</dl>
+		</PageSection>
+	{/if}
+
+	{#if project.compatibility}
+		<PageSection id="compatibility" label="compatibility">
+			<ul>
+				{#if project.compatibility.node}<li>node {project.compatibility.node}</li>{/if}
+				{#if project.compatibility.platforms}<li>{project.compatibility.platforms.join(', ')}</li>{/if}
+			</ul>
+		</PageSection>
+	{/if}
+
+	{#if project.faq}
+		<PageSection id="faq" label="questions">
+			<dl>
+				{#each project.faq as entry (entry.question)}
+					<dt>{entry.question}</dt>
+					<dd>{@render text(entry.answer)}</dd>
+				{/each}
+			</dl>
+		</PageSection>
+	{/if}
+
+	<PageSection id="links" label="links">
+		<ul class="rows">
+			{#each links as link (link.label)}
 				<li>
-					<a href={link.href}>{link.label}<ExternalLink aria-hidden="true" size="0.85em" strokeWidth={2.25} /></a>
+					<span class="line">
+						<a href={link.href}>{link.label}</a>
+						<span class="details"><span>{host(link.href)}</span></span>
+					</span>
 				</li>
 			{/each}
 		</ul>
-
-		<dl class="facts">
-			<div><dt>status</dt><dd>{project.status}</dd></div>
-			<div><dt>lives on</dt><dd>{project.forge}</dd></div>
-			{#if project.forge === 'github' && project.stars}
-				<div><dt>stars</dt><dd>{count(project.stars)}</dd></div>
-			{/if}
-			{#if project.pushed}
-				<div><dt>last push</dt><dd>{day(project.pushed)}</dd></div>
-			{:else if project.created}
-				<div><dt>started</dt><dd>{day(project.created)}</dd></div>
-			{/if}
-		</dl>
-
-		{#if project.html}
-			<div class="prose">
-				<!-- Our own content files, rendered at build. -->
-				{@html project.html}
-			</div>
-		{/if}
-	</article>
-</div>
+	</PageSection>
+</article>
 
 <style>
-	.back {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.35rem;
-		margin-top: 1.5rem;
-		font-weight: 600;
-	}
-
-	.layout {
-		display: grid;
-		grid-template-columns: minmax(0, 1fr);
-		gap: clamp(1.5rem, 5vw, 4rem);
-		padding-block: 1.5rem 4rem;
-	}
-
-	.card-slot {
-		width: min(100%, 24rem);
-	}
-
-	@media (min-width: 56rem) {
-		.layout {
-			grid-template-columns: 22rem minmax(0, 1fr);
-			align-items: start;
-		}
-
-		.card-slot {
-			position: sticky;
-			top: 2rem;
-			width: 100%;
-		}
+	/* The head is one group, read in order: where you are, the name, what it is, how to get it, then the facts. */
+	.crumb {
+		margin-bottom: var(--gap-tight);
 	}
 
 	h1 {
-		font-size: clamp(2.4rem, 7vw, 4.5rem);
-		font-weight: 900;
-		font-stretch: 120%;
-		letter-spacing: -0.03em;
-		overflow-wrap: anywhere;
+		overflow-wrap: break-word;
 	}
 
-	.lead {
-		max-width: 40rem;
-		margin: 0.75rem 0 0;
-		font-size: 1.25rem;
-		color: var(--ink-soft);
+	/* What the project is: the page's second voice, a step under the name. The action that follows starts a new beat,
+	   so it sits a little further off. */
+	.tagline {
+		margin-bottom: var(--space-5);
+		font-size: var(--text-lead);
+		line-height: 1.45;
 	}
 
-	.links {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.6rem;
-		list-style: none;
-		padding: 0;
-		margin: 1.75rem 0 0;
-	}
-
-	.links a {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.4rem;
-		min-height: 2.75rem;
-		padding: 0.4rem 1rem;
-		border-radius: 999px;
-		border: 1.5px solid var(--ink);
-		color: var(--ink);
-		font-weight: 700;
-		text-decoration: none;
-		transition:
-			background 0.2s var(--ease-out),
-			color 0.2s var(--ease-out);
-	}
-
-	.links li:first-child a {
-		background: var(--ink);
-		color: var(--page);
-	}
-
-	.links a:hover {
-		background: var(--brand);
-		border-color: var(--brand);
-		color: oklch(0.15 0.03 330);
-	}
-
+	/* The facts as one quiet line of details, closing the head. */
 	.facts {
 		display: flex;
-		flex-wrap: wrap;
-		gap: 0.75rem 2rem;
-		margin: 2rem 0 0;
-		padding-block: 1rem;
-		border-block: 1.5px solid var(--weld);
+		margin-bottom: 0;
 	}
 
-	.facts dt {
-		font-size: 0.75rem;
-		font-weight: 700;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-		color: var(--ink-soft);
+	/* Feature and compatibility lists: a little air between items, so wrapped lines stay with their own item. The
+	   facts line and the links have their own styles. */
+	ul:not([class]) > li + li {
+		margin-top: var(--space-1);
 	}
 
-	.facts dd {
-		margin: 0;
-		font-weight: 700;
-		font-variant-numeric: tabular-nums;
-	}
-
-	.prose {
-		max-width: 68ch;
-		margin-top: 2rem;
-	}
-
-	.prose :global(:is(h2, h3)) {
-		margin: 2rem 0 0.5rem;
-		font-size: 1.4rem;
-		font-stretch: 100%;
-	}
-
-	.prose :global(pre) {
-		overflow-x: auto;
-		padding: 1rem 1.1rem;
-		border-radius: 0.6rem;
-		background: var(--card-art);
-		color: oklch(0.95 0.01 330);
-	}
-
-	.prose :global(:not(pre) > code) {
-		overflow-wrap: anywhere;
-		padding: 0.1em 0.35em;
-		border-radius: 0.3em;
-		background: var(--weld);
+	/* A term sits directly on its definition, and each pair is a block apart from the next. The indent matches the
+	   lists'. */
+	dd {
+		margin: 0 0 var(--gap-block) var(--space-5);
 	}
 </style>

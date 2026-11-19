@@ -7,7 +7,7 @@ module.exports = {
 		collect: {
 			startServerCommand: 'PORT=4181 sh scripts/serve.sh',
 			startServerReadyPattern: 'serving initial configuration',
-			url: ['/', '/docov/', '/upvote.at/', '/good-first-issue/'].map((path) => base + path),
+			url: ['/', '/docov/', '/upvote.at/', '/workistrator/', '/remain-e2e/'].map((path) => base + path),
 			numberOfRuns: 3
 		},
 		assert: {

@@ -5,11 +5,24 @@ import { playwright } from '@vitest/browser-playwright';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 
+// One per project: Vitest writes each project's name into its browser config.
 const browser = () => ({
 	enabled: true,
 	headless: true,
 	provider: playwright(),
 	instances: [{ browser: 'chromium' as const }]
+});
+
+const STORYBOOK = fileURLToPath(new URL('.storybook', import.meta.url));
+
+/**
+ * Every story as a test, with axe failing on any violation (.storybook/preview.ts). The same stories run three ways:
+ * light at desktop width, dark, and at a phone's width, so each state is checked in each.
+ */
+const storybookProject = (name: string, initialGlobals: Record<string, unknown> = {}) => ({
+	extends: true as const,
+	plugins: [storybookTest({ configDir: STORYBOOK, initialGlobals })],
+	test: { name, browser: browser() }
 });
 
 export default defineConfig({
@@ -42,10 +55,17 @@ export default defineConfig({
 		expect: { requireAssertions: true },
 		coverage: {
 			provider: 'v8',
-			include: ['src/**/*.{ts,svelte}'],
-			// The root layout's server file only sets page options; the build itself exercises them.
-			exclude: ['src/**/*.{test,spec,stories}.*', 'src/app.d.ts', 'src/routes/+layout.server.ts'],
-			thresholds: { lines: 99, functions: 99, branches: 83, statements: 99 }
+			include: ['src/**/*.{ts,svelte}', 'scripts/**/*.ts'],
+			// The root layout's server file only sets page options, which the build exercises, and story-coverage.ts only
+			// prints what its tested library returns.
+			exclude: [
+				'src/**/*.{test,spec,stories}.*',
+				'src/app.d.ts',
+				'src/routes/+layout.server.ts',
+				'scripts/**/*.test.ts',
+				'scripts/story-coverage.ts'
+			],
+			thresholds: { lines: 99, functions: 99, branches: 86, statements: 99 }
 		},
 		projects: [
 			{
@@ -64,15 +84,13 @@ export default defineConfig({
 					environment: 'node',
 					// Tests use the content files' own numbers and never call GitHub.
 					env: { GITHUB_TOKEN: '' },
-					include: ['src/**/*.{test,spec}.ts'],
+					include: ['src/**/*.{test,spec}.ts', 'scripts/**/*.test.ts'],
 					exclude: ['src/**/*.svelte.{test,spec}.ts']
 				}
 			},
-			{
-				extends: true,
-				plugins: [storybookTest({ configDir: fileURLToPath(new URL('.storybook', import.meta.url)) })],
-				test: { name: 'storybook', browser: browser() }
-			}
+			storybookProject('storybook'),
+			storybookProject('storybook-dark', { scheme: 'dark' }),
+			storybookProject('storybook-phone', { viewport: { value: 'mobile1', isRotated: false } })
 		]
 	}
 });

@@ -1,89 +1,245 @@
+/* A plain HTML document, done carefully: the system's own fonts, one readable column, black and white, no bold. */
 :root {
 	color-scheme: light dark;
 
-	/* The binder: its page and the clear sleeve pockets the cards sit in. These follow the theme. */
-	--page: light-dark(oklch(0.95 0.012 330), oklch(0.15 0.012 330));
-	--pocket: light-dark(oklch(0.985 0.006 330 / 0.75), oklch(0.21 0.014 330 / 0.85));
-	--pocket-shine: light-dark(oklch(1 0 0 / 0.9), oklch(1 0 0 / 0.08));
-	--weld: light-dark(oklch(0.86 0.016 330), oklch(0.3 0.016 330));
-	--ink: light-dark(oklch(0.22 0.03 330), oklch(0.95 0.01 330));
-	--ink-soft: light-dark(oklch(0.43 0.035 330), oklch(0.79 0.025 330));
-	--accent: light-dark(oklch(0.5 0.24 340), oklch(0.78 0.18 340));
+	--paper: light-dark(#ffffff, #000000);
+	--ink: light-dark(#000000, #ffffff);
+	/* For secondary text: AA on its paper in both themes. */
+	--ink-soft: light-dark(#5e5e5e, #a6a6a6);
+	--rule: light-dark(#d4d4d4, #333333);
 
-	/* The cards are printed, so they look the same in both themes. */
-	--brand: #ff00cc;
-	--card-face: oklch(0.985 0.006 330);
-	--card-ink: oklch(0.2 0.03 330);
-	--card-ink-soft: oklch(0.42 0.035 330);
-	--card-art: oklch(0.21 0.04 330);
-	--set-active: var(--brand);
-	--set-popular: oklch(0.82 0.15 82);
-	--set-archived: oklch(0.76 0.03 260);
+	--sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	--mono: ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
 
-	--display: 'Anybody Variable', 'Arial Narrow', sans-serif;
-	--body: 'Atkinson Hyperlegible Next Variable', system-ui, sans-serif;
-	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-	--gutter: clamp(1rem, 4vw, 3rem);
+	/* The type ramp. Every size on the site is one of these; hierarchy comes from size and space, never weight. */
+	--text-small: 0.9375rem;
+	--text-body: 1.0625rem;
+	--text-lead: 1.25rem;
+	--text-h2: 1.5rem;
+	--text-h1: 2.25rem;
 
-	background: var(--page);
+	/* The spacing scale, on a 0.25rem base, and the roles that use it. Space does the grouping: the closer two things
+	   sit, the more they belong together. */
+	--space-1: 0.25rem;
+	--space-2: 0.5rem;
+	--space-3: 0.75rem;
+	--space-4: 1rem;
+	--space-5: 1.5rem;
+	--space-6: 2rem;
+	--space-7: 3rem;
+	--space-8: 4.5rem;
+	/* A heading to what it introduces, a label to its command, a term to its definition. */
+	--gap-tight: var(--space-2);
+	/* Inside a row: a name and each line under it. Wider than the tight gap, so a link's underline clears the next line. */
+	--gap-item: var(--space-3);
+	/* Between blocks inside a section: paragraphs, lists, code. */
+	--gap-block: var(--space-4);
+	/* Between sections, so each reads as its own group. */
+	--gap-section: var(--space-7);
+	/* Around the page's main content: below the header, above the footer. */
+	--gap-page: var(--space-8);
+	/* Between the index's sections, which hold rows 3rem apart: a step past the rows, so sections read as groups. */
+	--gap-group: var(--space-8);
+
+	background: var(--paper);
 	color: var(--ink);
-	font-family: var(--body);
-	font-size: 1.0625rem;
-	line-height: 1.55;
-	accent-color: var(--accent);
+	font-family: var(--sans);
+	font-size: var(--text-body);
+	line-height: 1.6;
+	accent-color: var(--ink);
 	-webkit-text-size-adjust: 100%;
 }
 
-*,
-*::before,
-*::after {
-	box-sizing: border-box;
+/* A pinned scheme (Storybook's theme toolbar sets data-scheme). The minifier turns light-dark() into variables that
+   switch only where a color-scheme is declared, so the pin has to be a declaration, not just an inline style. */
+:root[data-scheme='light'] {
+	color-scheme: light;
 }
 
+:root[data-scheme='dark'] {
+	color-scheme: dark;
+}
+
+/* One column, centred at wide widths so it reads as the page rather than a strip down the left edge. */
 body {
-	margin: 0;
-	min-height: 100dvh;
+	max-width: 70ch;
+	margin: 0 auto;
+	padding: var(--space-5) clamp(1rem, 5vw, 3rem) var(--gap-page);
 }
 
 ::selection {
-	background: var(--brand);
-	color: oklch(0.15 0.03 330);
+	background: var(--ink);
+	color: var(--paper);
+}
+
+/* No bold anywhere: headings step down by size alone. */
+h1,
+h2,
+strong,
+b,
+th,
+dt {
+	font-weight: normal;
+}
+
+/* Document flow: blocks carry space below them, so sections and their first lines line up without special cases. */
+p,
+ul,
+ol,
+dl,
+pre {
+	margin: 0 0 var(--gap-block);
 }
 
 h1,
-h2,
-h3 {
-	font-family: var(--display);
-	line-height: 1.05;
-	letter-spacing: -0.02em;
+h2 {
+	margin: 0 0 var(--gap-tight);
+	line-height: 1.2;
 	text-wrap: balance;
-	margin: 0;
 }
 
-p {
+h1 {
+	font-size: var(--text-h1);
+}
+
+h2 {
+	font-size: var(--text-h2);
+}
+
+p,
+li,
+dd {
 	text-wrap: pretty;
 }
 
+ul,
+ol {
+	padding-left: var(--space-5);
+}
+
 a {
-	color: var(--accent);
+	color: inherit;
+	text-decoration-thickness: 1px;
 	text-underline-offset: 0.2em;
-	text-decoration-thickness: 0.08em;
 }
 
 a:hover {
-	text-decoration-thickness: 0.14em;
+	text-decoration-thickness: 2px;
 }
 
 :focus-visible {
-	outline: 3px solid var(--accent);
+	outline: 2px solid var(--ink);
 	outline-offset: 3px;
-	border-radius: 2px;
 }
 
+hr {
+	border: 0;
+	border-top: 1px solid var(--rule);
+	margin: 0 0 var(--gap-block);
+}
+
+/* Code is shown exactly as typed: no ligatures, and long lines scroll instead of breaking the column. */
 code,
 pre {
-	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	font-family: var(--mono);
 	font-size: 0.9em;
+	font-variant-ligatures: none;
+}
+
+pre {
+	overflow-x: auto;
+	padding: var(--space-3) var(--space-4);
+	border: 1px solid var(--rule);
+	line-height: 1.5;
+	scrollbar-color: var(--ink-soft) transparent;
+}
+
+:not(pre) > code {
+	overflow-wrap: anywhere;
+}
+
+/* A list of links people scan, then pick one: the index's projects, a project's links. Rows are set apart by space
+   alone. The whole row is its link's target: hovering it thickens the link's underline, and keyboard focus outlines the
+   row, since the row is what a click hits. */
+.rows {
+	padding: 0;
+	list-style: none;
+}
+
+/* Rows sit 3rem apart (1.5rem of padding each), four times the 0.75rem inside a row, so each row reads as one item
+   with room around it. The index's sections step out further (--gap-group), so they still read as groups. The padding,
+   not a gap, keeps the space inside each row's click target. Row text is trimmed to its cap height and baseline, so the
+   padding is the space a reader actually sees; where text-box isn't supported, rows keep symmetric line boxes instead. */
+.rows > li {
+	position: relative;
+	padding-block: var(--space-5);
+	line-height: 1.4;
+}
+
+/* text-box trims block containers, not flex ones, so the details are trimmed item by item. */
+.rows .line > a,
+.rows .details > *,
+.rows .description {
+	text-box: trim-both cap alphabetic;
+}
+
+/* The description sits an item gap under the name, measured from baseline to cap height. */
+.rows .description {
+	margin-top: var(--gap-item);
+}
+
+.rows > li:hover a {
+	text-decoration-thickness: 2px;
+}
+
+.rows a::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+}
+
+.rows a:focus-visible {
+	outline: none;
+}
+
+/* Offset so the outline clears the row's text on every side; it stays inside the padding between rows. */
+.rows > li:has(a:focus-visible) {
+	outline: 2px solid var(--ink);
+	outline-offset: var(--space-1);
+}
+
+/* A row's first line: the link leads on the left, its details sit right on the same baseline, at least 2rem from the
+   link so a long name never crowds them. When there isn't room for both, the details drop under the link. */
+.rows .line {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: var(--gap-item) var(--space-6);
+}
+
+/* Small facts in a row, separated by middle dots that screen readers skip. Flex, so markup whitespace doesn't add to
+   the dots' spacing; numbers are tabular so they line up from row to row. */
+.details {
+	display: inline-flex;
+	flex-wrap: wrap;
+	column-gap: var(--space-2);
+	padding: 0;
+	color: var(--ink-soft);
+	font-size: var(--text-small);
+	font-variant-numeric: tabular-nums;
+	list-style: none;
+}
+
+.details > * + *::before {
+	content: '\00b7' / '';
+	margin-right: var(--space-2);
+}
+
+/* Secondary text: smaller and softer, in the same face. */
+.muted {
+	color: var(--ink-soft);
+	font-size: var(--text-small);
 }
 
 .sr-only {

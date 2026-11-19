@@ -1,15 +1,21 @@
 import { describe, expect, it } from 'vitest';
-import { count, day, month } from './format.ts';
+import { day, nameParts, stars } from './format.ts';
 
 describe('format', () => {
-	it('writes months and days in lowercase, in UTC', () => {
-		expect(month('2026-11-01')).toBe('nov 2026');
+	it('writes days in lowercase, in UTC', () => {
 		expect(day('2026-11-17')).toBe('nov 17, 2026');
 		expect(day('2026-11-17T23:59:00Z')).toBe('nov 17, 2026');
 	});
 
-	it('groups thousands', () => {
-		expect(count(2112)).toBe('2,112');
-		expect(count(0)).toBe('0');
+	it('cuts names after dots and dashes, keeping every character', () => {
+		expect(nameParts('trending.upvote.at')).toEqual(['trending.', 'upvote.', 'at']);
+		expect(nameParts('remain-e2e')).toEqual(['remain-', 'e2e']);
+		expect(nameParts('docov')).toEqual(['docov']);
+	});
+
+	it('counts stars, grouping thousands and keeping one singular', () => {
+		expect(stars(2112)).toBe('2,112 stars');
+		expect(stars(1)).toBe('1 star');
+		expect(stars(0)).toBe('0 stars');
 	});
 });

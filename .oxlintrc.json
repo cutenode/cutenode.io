@@ -39,12 +39,16 @@
 		"unicorn/prefer-node-protocol": "error",
 		"unicorn/no-array-for-each": "off",
 		"unicorn/consistent-function-scoping": "off",
-		"import/no-unassigned-import": ["warn", { "allow": ["**/*.css", "@fontsource-variable/*"] }]
+		"import/no-unassigned-import": ["warn", { "allow": ["**/*.css", "@fontsource/**"] }]
 	},
 	"overrides": [
 		{
 			"files": ["**/*.test.ts"],
 			"rules": { "typescript/no-unsafe-type-assertion": "off" }
+		},
+		{
+			"files": ["scripts/**"],
+			"rules": { "no-console": "off" }
 		},
 		{
 			"files": ["src/app.d.ts"],

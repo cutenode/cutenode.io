@@ -1,20 +1,27 @@
 import { initLogger, log } from 'evlog';
 import { z } from 'zod';
+import type { Release } from '#lib/project.ts';
 
 // This module only runs at build time (SvelteKit's analyse and prerender steps, each its own process), so its log
 // lines are build output: pretty by hand, JSON in CI.
 initLogger({ env: { service: 'cutenode.io' }, pretty: !process.env.CI });
 
-export type RepoStats = { stars: number; pushed: string };
+export type RepoStats = { stars: number; pushed: string; release?: Release };
 
-const repoSchema = z.object({ stargazerCount: z.number(), pushedAt: z.string() }).nullable();
+const repoSchema = z
+	.object({
+		stargazerCount: z.number(),
+		pushedAt: z.string(),
+		latestRelease: z.object({ tagName: z.string(), publishedAt: z.string(), url: z.string() }).nullish()
+	})
+	.nullable();
 
 const responseSchema = z.object({ data: z.record(z.string(), repoSchema).nullish() });
 
 /**
- * Star counts and last-push days for `owner/name` repos, in one GraphQL request at build time. Without a token, or
- * when the request fails, it logs why and returns what it has (possibly nothing), so the content files' own numbers
- * stand in and the build carries on.
+ * Star counts, last-push days and latest releases for `owner/name` repos, in one GraphQL request at build time.
+ * Without a token, or when the request fails, it logs why and returns what it has (possibly nothing), so the content
+ * files' own numbers stand in and the build carries on.
  */
 export const fetchRepoStats = async (
 	repos: string[],
@@ -35,7 +42,7 @@ export const fetchRepoStats = async (
 	const fields = repos.map((repo, index) => {
 		const [owner, name] = repo.split('/');
 
-		return `r${index}: repository(owner: ${JSON.stringify(owner)}, name: ${JSON.stringify(name)}) { stargazerCount pushedAt }`;
+		return `r${index}: repository(owner: ${JSON.stringify(owner)}, name: ${JSON.stringify(name)}) { stargazerCount pushedAt latestRelease { tagName publishedAt url } }`;
 	});
 
 	try {
@@ -53,7 +60,16 @@ export const fetchRepoStats = async (
 		repos.forEach((repo, index) => {
 			const found = data?.[`r${index}`];
 
-			if (found) stats.set(repo, { stars: found.stargazerCount, pushed: found.pushedAt.slice(0, 10) });
+			if (!found) return;
+
+			const latest = found.latestRelease;
+			const release = latest && { version: latest.tagName, date: latest.publishedAt.slice(0, 10), url: latest.url };
+
+			stats.set(repo, {
+				stars: found.stargazerCount,
+				pushed: found.pushedAt.slice(0, 10),
+				...(release && { release })
+			});
 		});
 
 		const missing = repos.filter((repo) => !stats.has(repo));

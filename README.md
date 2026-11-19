@@ -1,33 +1,46 @@
 # cutenode.io
 
-the website for [cutenode](https://github.com/cutenode): cute lil' node projects. every project is a card in a binder, active work first, then the ones people starred. it's a static SvelteKit site, prerendered at build, with no runtime fetches.
+the website for [cutenode](https://github.com/cutenode): cute lil' node projects. the index lists them all (active work first, then tangled), and every project has its own landing page. it's a static SvelteKit site, prerendered at build, with no runtime fetches.
 
 ## adding a project
 
-add one file to `src/content/projects/<slug>.md`. the slug is the URL (`/docov/`).
+add one file to `src/content/projects/<slug>.md`. the slug is the URL (`/docov/`). everything below `repo` is optional.
 
 ```md
 ---
 name: docov
-description: JSDoc and TSDoc coverage for JavaScript and TypeScript.
-status: active # active, popular or archived
+description: JSDoc and TSDoc coverage for JavaScript and TypeScript. # the tagline
+status: active # active or archived
 forge: github # github or tangled
 repo: https://github.com/cutenode/docov
-site: https://example.com # optional
-package: https://www.npmjs.com/package/@docov/cli # optional: npm, crates.io, GitHub Marketplace
+site: https://example.com # its own website; the page then sends people there
+package: https://www.npmjs.com/package/@docov/cli # npm, crates.io, GitHub Marketplace
+homepage: true # no site of its own: cutenode.io/docov/ is its homepage
+docs: https://github.com/cutenode/docov/tree/main/docs
+changelog: https://github.com/cutenode/docov/releases
+install: # real commands, the first one leads the page
+  - label: npm
+    command: npm install --save-dev @docov/cli
+usage: { language: sh, code: docov --threshold 80 }
+features: [Lists every undocumented declaration]
+options: [{ name: --threshold, description: Fail under this percentage., default: '0' }] # homepage only
+faq: [{ question: Does it need a build?, answer: No. }] # homepage only
+compatibility: { node: '>=22', platforms: [macOS, Linux, Windows] } # homepage only
 stars: 0 # github: fallback, the build refreshes it
 pushed: 2026-11-17 # github: fallback, the build refreshes it
 created: 2026-08-03 # tangled: from `tg repo view`
 ---
 
-an optional write-up, in markdown, shown on the project's page.
+what it is and who it's for, in markdown: the page's "about".
 ```
 
-the schema is `frontmatterSchema` in `src/lib/server/schema.ts`. `pnpm test` checks every file against it, and for em dashes and emoji.
+the schema is `frontmatterSchema` in `src/lib/server/schema.ts`. it's strict, a project with its own site can't be a homepage, and options, faq and compatibility need `homepage: true`. `pnpm test` checks every file against it, and for em dashes and emoji. content is curated from each project's README and package metadata, not fetched at build.
 
-## stars and dates
+every page also gets a preview image, `og.png` beside it, drawn at build time from its name and tagline (`src/lib/server/og.ts`), and project pages carry schema.org `SoftwareSourceCode` data.
 
-at build time the site asks GitHub's GraphQL API for every GitHub project's star count and last push, in one request. it needs `GITHUB_TOKEN` (any token works; a fine-grained one with no permissions can read public repos). without a token, or if the request fails, the build logs why and uses the numbers in the content files. tangled projects show what's in their file.
+## stars, dates and releases
+
+at build time the site asks GitHub's GraphQL API for every GitHub project's star count, last push and latest release, in one request. it needs `GITHUB_TOKEN` (any token works; a fine-grained one with no permissions can read public repos). without a token, or if the request fails, the build logs why and uses the numbers in the content files. tangled projects show what's in their file.
 
 ```sh
 GITHUB_TOKEN=$(gh auth token) pnpm build

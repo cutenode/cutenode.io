@@ -1,17 +1,35 @@
 ---
 name: nodevu
-description: Node.js version information, collected and merged into one place.
+description: a utility for Node.js version information
 status: active
 forge: github
 repo: https://github.com/cutenode/nodevu
 site: https://nodevu.dev
 package: https://www.npmjs.com/package/@nodevu/core
+docs: https://nodevu.dev
+changelog: https://github.com/cutenode/nodevu/releases
+install:
+  - label: npm
+    command: npm install @nodevu/core
+  - label: npm (offline)
+    command: npm install @nodevu/static
+usage:
+  language: js
+  code: |
+    import nodevu from '@nodevu/core';
+
+    const data = await nodevu();
+
+    data.v20.support.codename; //=> 'Iron'
+features:
+  - "@nodevu/core fetches Node.js's release index and schedule and merges them, keyed by release line."
+  - Works out each line's phase, its newest and oldest LTS and security releases, and the files each release ships.
+  - '@nodevu/static is the same data offline, updated when new data lands.'
+  - Smaller modules for version ranges, aliases, and the oldest or newest release in a line.
 stars: 15
 pushed: 2026-11-17
 ---
 
-nodevu collects, merges, and reasons about Node.js versions so you don't have to. It's a set of modules, all supporting Node.js 24 and later.
+nodevu is a Node.js version utility. It collects, merges and reasons about Node.js versions, and hands back the result in a shape that's easy to get at and (hopefully!) useful.
 
-`@nodevu/core` fetches version data from Node.js's own sources and adds context it works out from the date and other signals. `@nodevu/static` is the offline version, updated automatically when new data lands. Smaller modules answer narrower questions: the oldest or newest LTS or security release in a line, version ranges, aliases, and which files each release ships.
-
-Docs live at [nodevu.dev](https://nodevu.dev).
+It's a set of modules, each supporting Node.js 24 and later, with docs at [nodevu.dev](https://nodevu.dev).
